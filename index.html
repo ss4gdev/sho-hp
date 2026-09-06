@@ -226,7 +226,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 @keyframes scrolldrip{0%{top:-100%;}60%{top:100%;}100%{top:100%;}}
 @media (max-width:640px){
   .hero{padding-top:130px;padding-bottom:96px;align-items:flex-end;}
-  .hero-bg img{object-position:38% center;}
+  .hero-bg img{object-position:62% center;}
+  .hero-bg::before{background:linear-gradient(180deg, rgba(43,58,74,.55) 0%, rgba(43,58,74,.38) 45%, rgba(43,58,74,.62) 100%);}
   .hero-scroll{display:none;}
   .hero-actions .btn{width:100%;}
   .hero-actions{flex-direction:column;}
@@ -537,7 +538,7 @@ footer .flinks a:hover{color:var(--accent-deep);}
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
   <div class="hero-bg">
-    <img src="assets/hero.jpg" alt="黒のセットアップに身を包み、静かに佇む人物">
+    <img src="assets/hero.jpg" alt="朝の光が差し込むカフェで、エプロン姿の店舗オーナーが穏やかに佇む様子">
   </div>
   <div class="wrap hero-inner">
     <p class="hero-eyebrow reveal">Web Design &amp; Ongoing Partner</p>
