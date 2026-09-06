@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>SHU（シュー）| 難波の韓国トレンドヘアサロン</title>
+<meta name="description" content="大阪・難波駅徒歩3分。透明感カラー、タッセルカット、ヨシンモリ、エギョモリなど本場仕込みの韓国トレンドヘアが叶うヘアサロン SHU。">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#1A1A1A',
+          charcoal: '#2B2A28',
+          cream: '#F9F9F8',
+          greige: '#EDEAE4',
+          beige: '#D8CFC0',
+          sand: '#B7A98E',
+        },
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'serif'],
+          mincho: ['"Shippori Mincho"', 'serif'],
+          jp: ['"Noto Sans JP"', 'sans-serif'],
+          sans: ['Inter', '"Noto Sans JP"', 'sans-serif'],
+        },
+        letterSpacing: {
+          widest2: '.35em',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  body { background-color: #F9F9F8; color: #1A1A1A; overflow-wrap: anywhere; }
+
+  /* Hero height: safe fallback for browsers without svh support, then progressively enhance */
+  #top { height: 100vh; }
+  @supports (height: 100svh) {
+    #top { height: 100svh; }
+  }
+
+  /* Hero motion 1: scroll-linked zoom-out (1.3x at top -> 1x when hero scrolled out). All devices. */
+  .hero-kenburns {
+    transform-origin: 48% 40%;
+    transform: scale(1.3);
+    will-change: transform;
+  }
+  /* Hero motion 2: scroll parallax container (transform is set by JS on md+ only) */
+  #hero-parallax { transition: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-kenburns { transform: none !important; }
+    #hero-parallax { transform: none !important; }
+  }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1s cubic-bezier(.16,.84,.44,1), transform 1s cubic-bezier(.16,.84,.44,1);
+  }
+  .fade-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-up-delay-1 { transition-delay: .12s; }
+  .fade-up-delay-2 { transition-delay: .24s; }
+  .fade-up-delay-3 { transition-delay: .36s; }
+  .fade-up-delay-4 { transition-delay: .48s; }
+
+  .hairline { letter-spacing: .3em; }
+
+  .underline-hover { position: relative; }
+  .underline-hover::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 1px;
+    background: currentColor;
+    transition: width .5s cubic-bezier(.16,.84,.44,1);
+  }
+  .underline-hover:hover::after { width: 100%; }
+
+  .img-zoom { overflow: hidden; }
+  .img-zoom img { transition: transform 1.1s cubic-bezier(.16,.84,.44,1), filter .6s ease; }
+  .img-zoom:hover img { transform: scale(1.06); }
+
+  .gtab.active {
+    background-color: #1A1A1A;
+    color: #F9F9F8;
+  }
+
+  .header-scrolled {
+    background-color: rgba(249,249,248,0.92);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 rgba(26,26,26,0.06);
+  }
+
+  /* ===== Scroll-linked dark mode (Style Gallery -> Menu -> Stylist, one continuous zone) ===== */
+  body {
+    transition: background-color .6s ease;
+  }
+  body.is-dark {
+    background-color: #1A1A1A;
+  }
+
+  #style, #menu, #stylist {
+    color: #1A1A1A;
+    transition: color .6s ease;
+  }
+  body.is-dark #style,
+  body.is-dark #menu,
+  body.is-dark #stylist {
+    color: #F9F9F8;
+  }
+
+  body.is-dark #style .text-ink\/60,
+  body.is-dark #stylist .text-ink\/60 { color: rgba(249,249,248,.6); }
+  body.is-dark #stylist .text-ink\/50 { color: rgba(249,249,248,.5); }
+  body.is-dark #menu .text-ink\/40,
+  body.is-dark #stylist .text-ink\/40 { color: rgba(249,249,248,.4); }
+  body.is-dark #stylist .group:hover .group-hover\:text-ink { color: #F9F9F8; }
+
+  body.is-dark #style .gtab { border-color: rgba(249,249,248,.25); }
+  body.is-dark #style .gtab.active { background-color: #F9F9F8; color: #1A1A1A; }
+
+  body.is-dark #menu .border-ink\/15 { border-color: rgba(249,249,248,.15); }
+  body.is-dark #menu .border-ink\/20 { border-color: rgba(249,249,248,.2); }
+
+  body.is-dark .text-sand { color: #CDBFA0; }
+
+  /* Header + mobile CTA follow the dark state */
+  .hdr-logo, .hdr-cta, .hdr-line, #menu-btn,
+  .mcta-link, .mcta-primary, #site-header nav a {
+    transition: color .6s ease, background-color .6s ease, border-color .6s ease;
+  }
+  body.is-dark .header-scrolled {
+    background-color: rgba(26,26,26,0.92);
+    box-shadow: 0 1px 0 rgba(249,249,248,0.08);
+  }
+  body.is-dark .hdr-logo { color: #F9F9F8; }
+  body.is-dark #site-header nav { color: rgba(249,249,248,.8); }
+  body.is-dark .hdr-cta { background-color: #F9F9F8; color: #1A1A1A; }
+  body.is-dark .hdr-cta:hover { background-color: #D8CFC0; }
+  body.is-dark .hdr-line { border-color: rgba(249,249,248,.3); color: #F9F9F8; }
+  body.is-dark .hdr-line:hover { border-color: #F9F9F8; }
+  body.is-dark #menu-btn { color: #F9F9F8; }
+
+  #mobile-cta-bar {
+    transition: background-color .6s ease, border-color .6s ease;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  body.is-dark #mobile-cta-bar { background-color: #1A1A1A; border-color: rgba(249,249,248,.1); }
+  body.is-dark #mobile-cta-bar .mcta-link { color: #F9F9F8; border-color: rgba(249,249,248,.1); }
+  body.is-dark #mobile-cta-bar .mcta-primary { background-color: #F9F9F8; color: #1A1A1A; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F9F9F8; }
+  ::-webkit-scrollbar-thumb { background: #D8CFC0; border-radius: 4px; }
+
+  .mobile-nav {
+    transform: translateX(100%);
+    transition: transform .55s cubic-bezier(.16,.84,.44,1);
+  }
+  .mobile-nav.open { transform: translateX(0); }
+</style>
+</head>
+
+<body class="font-jp antialiased">
+
+<!-- ============ HEADER ============ -->
+<header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+  <div class="max-w-[1400px] mx-auto flex items-center justify-between px-6 md:px-10 h-20">
+    <a href="#top" class="hdr-logo font-serif text-3xl md:text-4xl tracking-widest text-ink">SHU</a>
+
+    <nav class="hidden lg:flex items-center gap-10 text-[13px] tracking-widest2 uppercase text-ink/80">
+      <a href="#concept" class="underline-hover">Concept</a>
+      <a href="#style" class="underline-hover">Style</a>
+      <a href="#menu" class="underline-hover">Menu</a>
+      <a href="#stylist" class="underline-hover">Stylist</a>
+      <a href="#access" class="underline-hover">Access</a>
+    </nav>
+
+    <div class="hidden lg:flex items-center gap-3">
+      <a href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener" class="hdr-cta px-6 py-3 bg-ink text-cream text-xs tracking-widest uppercase hover:bg-charcoal transition-colors duration-300">Web予約</a>
+      <a href="https://line.me/" target="_blank" rel="noopener" class="hdr-line flex items-center gap-2 px-6 py-3 border border-ink/30 text-ink text-xs tracking-widest uppercase hover:border-ink transition-colors duration-300">
+        <i data-lucide="message-circle" class="w-4 h-4"></i> LINE
+      </a>
+    </div>
+
+    <button id="menu-btn" class="lg:hidden text-ink p-2 -m-2" aria-label="メニューを開く">
+      <i data-lucide="menu" class="w-7 h-7"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV ============ -->
+<div id="mobile-nav" class="mobile-nav fixed inset-0 z-[60] bg-cream flex flex-col">
+  <div class="flex items-center justify-between px-6 h-20 border-b border-ink/10">
+    <span class="font-serif text-3xl tracking-widest">SHU</span>
+    <button id="menu-close" class="text-ink p-2 -m-2" aria-label="メニューを閉じる">
+      <i data-lucide="x" class="w-7 h-7"></i>
+    </button>
+  </div>
+  <nav class="flex flex-col items-center justify-center flex-1 gap-8 text-xl tracking-widest">
+    <a href="#concept" class="mnav-link">Concept</a>
+    <a href="#style" class="mnav-link">Style</a>
+    <a href="#menu" class="mnav-link">Menu</a>
+    <a href="#stylist" class="mnav-link">Stylist</a>
+    <a href="#access" class="mnav-link">Access</a>
+  </nav>
+  <div class="flex flex-col gap-3 px-8 pb-12">
+    <a href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener" class="text-center px-6 py-4 bg-ink text-cream text-xs tracking-widest uppercase">Web予約 (Hot Pepper Beauty)</a>
+    <a href="https://line.me/" target="_blank" rel="noopener" class="text-center px-6 py-4 border border-ink/30 text-ink text-xs tracking-widest uppercase">LINEで予約</a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="relative w-full overflow-hidden">
+  <div id="hero-parallax" class="absolute inset-0 will-change-transform">
+    <img src="images/hero-main.jpg"
+         alt="ミディアムヘアスタイルのモデルイメージ"
+         style="object-position: 48% 40%;"
+         class="hero-kenburns absolute inset-0 w-full h-full object-cover">
+  </div>
+  <div class="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/20 to-ink/60"></div>
+
+  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+    <p class="fade-up is-visible text-cream/80 text-xs md:text-sm tracking-widest2 uppercase mb-6">Namba / Korean Trend Hair Salon</p>
+    <h1 class="fade-up is-visible fade-up-delay-1 font-mincho text-cream text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.5] md:leading-[1.6] tracking-wider">
+      鏡を見るたび、<br class="md:hidden">もっと自分が好きになる。
+    </h1>
+    <p class="fade-up is-visible fade-up-delay-2 font-serif italic text-cream/70 text-lg md:text-2xl mt-6 tracking-wide">Fall in Love With Your Reflection</p>
+
+    <div class="fade-up is-visible fade-up-delay-3 flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener" class="px-10 py-4 bg-cream text-ink text-xs tracking-widest uppercase hover:bg-beige transition-colors duration-300">Web予約はこちら</a>
+      <a href="#style" class="px-10 py-4 border border-cream/60 text-cream text-xs tracking-widest uppercase hover:bg-cream/10 transition-colors duration-300">Style Gallery</a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-cream/70">
+    <span class="text-[10px] tracking-widest2 uppercase">Scroll</span>
+    <span class="w-px h-10 bg-cream/50 animate-pulse"></span>
+  </div>
+</section>
+
+<!-- ============ CONCEPT ============ -->
+<section id="concept" class="relative py-28 md:py-40 px-6 md:px-10 overflow-hidden">
+  <img src="images/concept.jpg"
+       alt="SHU店内の様子"
+       class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-ink/65"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto">
+    <div class="fade-up max-w-2xl">
+      <p class="text-xs tracking-widest2 uppercase text-sand mb-5">Concept</p>
+      <h2 class="font-serif text-3xl md:text-4xl leading-relaxed mb-8 text-cream">
+        似合わせで纏う、<br>本場・韓国のトレンド。
+      </h2>
+      <p class="text-sm md:text-base leading-loose text-cream/80 mb-6">
+        SHUは、韓国現地の最新トレンドをいち早く取り入れながら、日本人一人ひとりの骨格・髪質に合わせた「似合わせカット」を追求するヘアサロンです。タッセルカット、ヨシンモリ、エギョモリといった韓国スタイルを、単なる形の模倣ではなく、あなたの魅力を引き出す一着として仕立てます。
+      </p>
+      <p class="text-sm md:text-base leading-loose text-cream/80 mb-10">
+        髪質・頭皮に寄り添う薬剤選定による艶髪シアーカラーで、透明感と抜け感を両立。トレンドと再現性、その両方に妥協しない空間を難波でご提供します。
+      </p>
+      <div class="grid grid-cols-3 gap-6 border-t border-cream/20 pt-8 text-cream">
+        <div>
+          <p class="font-serif text-3xl mb-1">10<span class="text-lg">年+</span></p>
+          <p class="text-[11px] tracking-widest text-cream/60 uppercase">Experience</p>
+        </div>
+        <div>
+          <p class="font-serif text-3xl mb-1">徒歩3<span class="text-lg">分</span></p>
+          <p class="text-[11px] tracking-widest text-cream/60 uppercase">From Namba Sta.</p>
+        </div>
+        <div>
+          <p class="font-serif text-3xl mb-1">3<span class="text-lg">名</span></p>
+          <p class="text-[11px] tracking-widest text-cream/60 uppercase">Stylists</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STYLE GALLERY ============ -->
+<section id="style" class="py-28 md:py-40 px-6 md:px-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="text-center mb-16 fade-up">
+      <p class="text-xs tracking-widest2 uppercase text-sand mb-5">Style Gallery</p>
+      <h2 class="font-serif text-3xl md:text-4xl">Korean Trend Style</h2>
+      <p class="text-sm text-ink/60 mt-5 max-w-lg mx-auto leading-loose transition-colors duration-500">
+        ヨシンモリ、レイヤーカット、ショートカットヘア。SHUが手がけるスタイルの一部をご紹介します。
+      </p>
+    </div>
+
+    <div class="fade-up flex flex-wrap justify-center gap-3 mb-14">
+      <button class="gtab active px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="all">All</button>
+      <button class="gtab px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="yoshin">ヨシンモリ</button>
+      <button class="gtab px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="layer">レイヤーカット</button>
+      <button class="gtab px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="short">ショートカット</button>
+    </div>
+
+    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin" data-featured="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer" data-featured="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short" data-featured="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU & PRICE ============ -->
+<section id="menu" class="py-28 md:py-40 px-6 md:px-10">
+  <div class="max-w-[1100px] mx-auto">
+    <div class="text-center mb-16 fade-up">
+      <p class="text-xs tracking-widest2 uppercase text-sand mb-5">Menu & Price</p>
+      <h2 class="font-serif text-3xl md:text-4xl">Menu</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-x-16 gap-y-14">
+      <div class="fade-up">
+        <h3 class="flex items-center gap-3 font-serif text-2xl mb-6 pb-3 border-b border-ink/15 transition-colors duration-500">
+          <i data-lucide="scissors" class="w-5 h-5 text-sand"></i> Cut
+        </h3>
+        <ul class="space-y-4 text-sm">
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">似合わせデザインカット</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥7,700</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">カット + シャンプーブロー</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥8,800</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">前髪カット</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥1,100</span></li>
+        </ul>
+      </div>
+
+      <div class="fade-up fade-up-delay-1">
+        <h3 class="flex items-center gap-3 font-serif text-2xl mb-6 pb-3 border-b border-ink/15 transition-colors duration-500">
+          <i data-lucide="droplet" class="w-5 h-5 text-sand"></i> Color
+        </h3>
+        <ul class="space-y-4 text-sm">
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">透明感シアーカラー</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥12,100〜</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">ハイライト / グラデーション</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥16,500〜</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">リタッチカラー</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥9,900〜</span></li>
+        </ul>
+      </div>
+
+      <div class="fade-up fade-up-delay-2">
+        <h3 class="flex items-center gap-3 font-serif text-2xl mb-6 pb-3 border-b border-ink/15 transition-colors duration-500">
+          <i data-lucide="sparkles" class="w-5 h-5 text-sand"></i> Perm
+        </h3>
+        <ul class="space-y-4 text-sm">
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">韓国風ダウンパーマ</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥14,300〜</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">ヨシンモリパーマ</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥16,500〜</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">縮毛矯正</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥19,800〜</span></li>
+        </ul>
+      </div>
+
+      <div class="fade-up fade-up-delay-3">
+        <h3 class="flex items-center gap-3 font-serif text-2xl mb-6 pb-3 border-b border-ink/15 transition-colors duration-500">
+          <i data-lucide="leaf" class="w-5 h-5 text-sand"></i> Treatment
+        </h3>
+        <ul class="space-y-4 text-sm">
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">髪質改善トリートメント</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥8,800〜</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">水トリートメント</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥5,500</span></li>
+          <li class="flex justify-between items-baseline"><span class="min-w-0 shrink">ヘッドスパ</span><span class="flex-1 min-w-[16px] border-b border-dotted border-ink/20 mx-3 translate-y-[-4px] transition-colors duration-500"></span><span class="font-medium shrink-0">¥4,400〜</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-ink/40 mt-14 fade-up transition-colors duration-500">※ 表示価格は全て税込です。髪の長さ・状態によって別途料金が加算される場合がございます。</p>
+  </div>
+</section>
+
+<!-- ============ STYLIST ============ -->
+<section id="stylist" class="py-28 md:py-40 px-6 md:px-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="text-center mb-16 fade-up">
+      <p class="text-xs tracking-widest2 uppercase text-sand mb-5">Stylist</p>
+      <h2 class="font-serif text-3xl md:text-4xl">Our Stylists</h2>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <!-- 1 -->
+      <a href="#" target="_blank" rel="noopener" class="fade-up group block">
+        <div class="img-zoom aspect-[3/4] mb-5">
+          <img src="1.jpg" alt="上本花梨" class="w-full h-full object-cover">
+        </div>
+        <p class="text-[10px] tracking-widest2 uppercase text-sand mb-1">Executive Stylist</p>
+        <h3 class="font-serif text-xl mb-0.5">上本花梨</h3>
+        <p class="text-xs text-ink/50 mb-2 tracking-wide transition-colors duration-500">Karin Uemoto</p>
+        <span class="inline-flex items-center gap-1.5 text-xs text-ink/60 group-hover:text-ink transition-colors">
+          <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Instagram
+        </span>
+      </a>
+      <!-- 2 -->
+      <a href="#" target="_blank" rel="noopener" class="fade-up fade-up-delay-1 group block">
+        <div class="img-zoom aspect-[3/4] mb-5">
+          <img src="2.jpg" alt="佐藤凛星" class="w-full h-full object-cover">
+        </div>
+        <p class="text-[10px] tracking-widest2 uppercase text-sand mb-1">Stylist</p>
+        <h3 class="font-serif text-xl mb-0.5">佐藤凛星</h3>
+        <p class="text-xs text-ink/50 mb-2 tracking-wide transition-colors duration-500">Rise Sato</p>
+        <span class="inline-flex items-center gap-1.5 text-xs text-ink/60 group-hover:text-ink transition-colors">
+          <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Instagram
+        </span>
+      </a>
+      <!-- 3 -->
+      <a href="#" target="_blank" rel="noopener" class="fade-up fade-up-delay-2 group block">
+        <div class="img-zoom aspect-[3/4] mb-5">
+          <img src="3.jpg" alt="多賀涼子" class="w-full h-full object-cover">
+        </div>
+        <p class="text-[10px] tracking-widest2 uppercase text-sand mb-1">Junior Stylist</p>
+        <h3 class="font-serif text-xl mb-0.5">多賀涼子</h3>
+        <p class="text-xs text-ink/50 mb-2 tracking-wide transition-colors duration-500">Ryoko Taga</p>
+        <span class="inline-flex items-center gap-1.5 text-xs text-ink/60 group-hover:text-ink transition-colors">
+          <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Instagram
+        </span>
+      </a>
+    </div>
+    <p class="text-center text-xs text-ink/40 mt-10 fade-up transition-colors duration-500">※ Instagramリンクは仮設定です。各スタイリストのアカウントURLをお知らせいただき次第、反映いたします。</p>
+  </div>
+</section>
+
+<!-- ============ ACCESS ============ -->
+<section id="access" class="py-28 md:py-40 px-6 md:px-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="text-center mb-16 fade-up">
+      <p class="text-xs tracking-widest2 uppercase text-sand mb-5">Access</p>
+      <h2 class="font-serif text-3xl md:text-4xl">Salon Info</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-stretch">
+      <div class="fade-up bg-greige aspect-[4/3] md:aspect-auto flex items-center justify-center relative overflow-hidden">
+        <div class="text-center text-ink/40">
+          <i data-lucide="map-pin" class="w-8 h-8 mx-auto mb-3"></i>
+          <p class="text-xs tracking-widest uppercase">Map</p>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E9%9B%A3%E6%B3%A2"
+           target="_blank" rel="noopener"
+           class="absolute bottom-5 right-5 px-5 py-3.5 bg-ink text-cream text-[11px] tracking-widest uppercase hover:bg-charcoal transition-colors">
+          Google Mapで開く
+        </a>
+      </div>
+
+      <div class="fade-up fade-up-delay-1 flex flex-col justify-center">
+        <dl class="space-y-8 text-sm">
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Salon</dt>
+            <dd class="leading-loose">SHU（シュー）</dd>
+          </div>
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Address</dt>
+            <dd class="leading-loose">大阪府大阪市中央区難波3丁目<br>◯◯ビル 3F</dd>
+          </div>
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Access</dt>
+            <dd class="leading-loose">Osaka Metro 御堂筋線「なんば駅」<br>より徒歩3分</dd>
+          </div>
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Hours</dt>
+            <dd class="leading-loose">10:00 - 20:00（最終受付 19:00）</dd>
+          </div>
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Closed</dt>
+            <dd class="leading-loose">毎週火曜日</dd>
+          </div>
+          <div class="flex gap-6">
+            <dt class="w-24 shrink-0 text-ink/40 tracking-widest text-xs uppercase pt-1">Tel</dt>
+            <dd class="leading-loose">06-0000-0000</dd>
+          </div>
+        </dl>
+
+        <div class="flex flex-col sm:flex-row gap-4 mt-10">
+          <a href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener" class="text-center px-8 py-4 bg-ink text-cream text-xs tracking-widest uppercase hover:bg-charcoal transition-colors">Web予約</a>
+          <a href="https://line.me/" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 px-8 py-4 border border-ink/30 text-xs tracking-widest uppercase hover:border-ink transition-colors">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> LINEで予約
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-ink text-cream/70 pt-20 pb-32 md:pb-20 px-6 md:px-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="flex flex-col md:flex-row justify-between gap-12 mb-16">
+      <div>
+        <p class="font-serif text-3xl text-cream tracking-widest mb-4">SHU</p>
+        <p class="text-xs leading-loose max-w-xs">難波で叶える、本場仕込みの韓国トレンドヘア。</p>
+      </div>
+      <nav class="flex flex-wrap gap-x-10 gap-y-3 text-xs tracking-widest uppercase">
+        <a href="#concept" class="underline-hover">Concept</a>
+        <a href="#style" class="underline-hover">Style</a>
+        <a href="#menu" class="underline-hover">Menu</a>
+        <a href="#stylist" class="underline-hover">Stylist</a>
+        <a href="#access" class="underline-hover">Access</a>
+      </nav>
+      <div class="flex gap-4">
+        <a href="#" target="_blank" rel="noopener" class="w-11 h-11 flex items-center justify-center border border-cream/20 hover:border-cream/60 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+        <a href="https://line.me/" target="_blank" rel="noopener" class="w-11 h-11 flex items-center justify-center border border-cream/20 hover:border-cream/60 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-cream/10 text-[11px] tracking-wide">
+      <p>© 2026 SHU. All Rights Reserved.</p>
+      <a href="#top" class="flex items-center gap-2 hover:text-cream transition-colors">Back to Top <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MOBILE FLOATING CTA ============ -->
+<div id="mobile-cta-bar" class="lg:hidden fixed bottom-0 left-0 w-full z-40 flex bg-cream border-t border-ink/10 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
+  <a href="tel:0600000000" class="mcta-link flex-1 flex flex-col items-center justify-center gap-0.5 py-3 border-r border-ink/10 text-ink">
+    <i data-lucide="phone" class="w-5 h-5"></i>
+    <span class="text-[10px] tracking-widest">電話予約</span>
+  </a>
+  <a href="https://line.me/" target="_blank" rel="noopener" class="mcta-link flex-1 flex flex-col items-center justify-center gap-0.5 py-3 border-r border-ink/10 text-ink">
+    <i data-lucide="message-circle" class="w-5 h-5"></i>
+    <span class="text-[10px] tracking-widest">LINE予約</span>
+  </a>
+  <a href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener" class="mcta-primary flex-[1.4] flex flex-col items-center justify-center gap-0.5 py-3 bg-ink text-cream">
+    <i data-lucide="calendar" class="w-5 h-5"></i>
+    <span class="text-[10px] tracking-widest">WEB予約</span>
+  </a>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // Header background on scroll
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 40) header.classList.add('header-scrolled');
+    else header.classList.remove('header-scrolled');
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // Hero motion: scroll-linked zoom-out (all devices) + parallax (md+ only). Both off under reduced-motion.
+  const heroParallax = document.getElementById('hero-parallax');
+  const heroImg = document.querySelector('.hero-kenburns');
+  const heroSection = document.getElementById('top');
+  const mdQuery = window.matchMedia('(min-width: 768px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const HERO_ZOOM_START = 1.3;
+  let parallaxTicking = false;
+  const applyParallax = () => {
+    parallaxTicking = false;
+    if (reduceMotion.matches) {
+      heroParallax.style.transform = '';
+      heroImg.style.transform = '';
+      return;
+    }
+    const heroH = heroSection.offsetHeight || 1;
+    const y = Math.min(window.scrollY, heroH);
+    const progress = y / heroH; // 0 at top -> 1 when hero is fully scrolled out
+    const scale = HERO_ZOOM_START - (HERO_ZOOM_START - 1) * progress;
+    heroImg.style.transform = `scale(${scale.toFixed(4)})`;
+    heroParallax.style.transform = mdQuery.matches ? `translate3d(0, ${y * 0.3}px, 0)` : '';
+  };
+  const onParallaxScroll = () => {
+    if (!parallaxTicking) {
+      parallaxTicking = true;
+      requestAnimationFrame(applyParallax);
+    }
+  };
+  window.addEventListener('scroll', onParallaxScroll, { passive: true });
+  window.addEventListener('resize', onParallaxScroll);
+  mdQuery.addEventListener('change', applyParallax);
+  applyParallax();
+
+  // Mobile menu
+  const menuBtn = document.getElementById('menu-btn');
+  const menuClose = document.getElementById('menu-close');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mnavLinks = document.querySelectorAll('.mnav-link');
+
+  // iOS Safari doesn't reliably respect `overflow:hidden` on <body> to stop background
+  // scroll behind a fixed overlay, so lock via position:fixed and restore scroll on close.
+  let scrollLockY = 0;
+  const openMenu = () => {
+    scrollLockY = window.scrollY;
+    mobileNav.classList.add('open');
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollLockY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+  };
+  const closeMenu = () => {
+    mobileNav.classList.remove('open');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, scrollLockY);
+  };
+
+  menuBtn.addEventListener('click', openMenu);
+  menuClose.addEventListener('click', closeMenu);
+  mnavLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+  // Fade-up on scroll
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeEls.forEach(el => io.observe(el));
+
+  // Scroll-linked dark mode: one continuous dark zone spanning Style Gallery -> Menu -> Stylist.
+  // A single range check (rather than per-section IntersectionObservers) avoids any gap/flicker
+  // at the seams between the three adjacent sections.
+  const darkZoneStart = document.getElementById('style');
+  const darkZoneEnd = document.getElementById('stylist');
+  const updateDarkZone = () => {
+    const startTop = darkZoneStart.getBoundingClientRect().top;
+    const endBottom = darkZoneEnd.getBoundingClientRect().bottom;
+    const judgmentLine = window.innerHeight / 2;
+    const inDarkZone = startTop <= judgmentLine && endBottom >= judgmentLine;
+    document.body.classList.toggle('is-dark', inDarkZone);
+  };
+  // rAF-throttled: on mobile, fast flick-scrolls can fire dozens of scroll events per
+  // frame, so this coalesces them to at most one dark-zone recalculation per frame.
+  let darkZoneTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!darkZoneTicking) {
+      darkZoneTicking = true;
+      requestAnimationFrame(() => {
+        updateDarkZone();
+        darkZoneTicking = false;
+      });
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateDarkZone);
+  updateDarkZone();
+
+  // Style gallery filter
+  const tabs = document.querySelectorAll('.gtab');
+  const items = document.querySelectorAll('.gitem');
+
+  const showFeatured = () => {
+    items.forEach(item => { item.style.display = item.dataset.featured === 'true' ? '' : 'none'; });
+  };
+  const showAll = () => {
+    items.forEach(item => { item.style.display = ''; });
+  };
+  const showCategory = (cat) => {
+    items.forEach(item => { item.style.display = item.dataset.cat === cat ? '' : 'none'; });
+  };
+
+  showFeatured();
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      if (filter === 'all') showAll();
+      else showCategory(filter);
+    });
+  });
+</script>
+
+</body>
+</html>
