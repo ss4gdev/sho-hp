@@ -100,8 +100,9 @@
     color: #F9F9F8;
   }
 
-  /* Style Gallery "All" on mobile: 3 auto-scrolling rows (one per category), alternating direction.
-     Each track holds the 4 photos twice, so translating by -50% loops seamlessly. */
+  /* Style Gallery "All": auto-scrolling rows with alternating direction
+     (mobile: 3 rows x 4, one category per row / PC: 2 rows x 6).
+     Each track holds its photos twice, so translating by -50% loops seamlessly. */
   @keyframes gmq-scroll {
     from { transform: translate3d(0, 0, 0); }
     to   { transform: translate3d(-50%, 0, 0); }
@@ -325,8 +326,8 @@
       <button class="gtab px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="short">ショートカット</button>
     </div>
 
-    <!-- Grid: all sizes for category tabs; md+ only for "All" (mobile "All" uses the marquee below) -->
-    <div id="gallery-grid" class="hidden md:grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    <!-- Grid: shown for category tabs only; "All" uses the marquee rows below (mobile 3x4, PC 2x6) -->
+    <div id="gallery-grid" class="hidden grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
@@ -343,42 +344,78 @@
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
     </div>
 
-    <!-- Mobile-only "All" view: 3 marquee rows (right / left / right), one category per row -->
-    <div id="gallery-marquee" class="md:hidden -mx-6 space-y-3 fade-up">
+    <!-- Mobile "All": 3 marquee rows (right / left / right), one category per row -->
+    <div id="gallery-marquee-sp" class="gallery-marquee md:hidden -mx-6 space-y-3 fade-up">
       <div class="gmq-row overflow-hidden" data-dir="right" style="--gmq-duration: 26s;">
         <div class="gmq-track">
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt=""></figure>
         </div>
       </div>
       <div class="gmq-row overflow-hidden" data-dir="left" style="--gmq-duration: 30s;">
         <div class="gmq-track">
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt=""></figure>
         </div>
       </div>
       <div class="gmq-row overflow-hidden" data-dir="right" style="--gmq-duration: 28s;">
         <div class="gmq-track">
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt=""></figure>
-          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- PC "All": 2 marquee rows of 6 (right / left) -->
+    <div id="gallery-marquee-pc" class="gallery-marquee hidden md:block md:-mx-10 space-y-4 fade-up">
+      <div class="gmq-row overflow-hidden" data-dir="right" style="--gmq-duration: 48s;">
+        <div class="gmq-track">
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+        </div>
+      </div>
+      <div class="gmq-row overflow-hidden" data-dir="left" style="--gmq-duration: 52s;">
+        <div class="gmq-track">
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="md:w-[15.5vw] aspect-[3/4] shrink-0 mr-3 md:mr-4 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt=""></figure>
         </div>
       </div>
     </div>
@@ -715,21 +752,24 @@
   const items = document.querySelectorAll('.gitem');
 
   const galleryGrid = document.getElementById('gallery-grid');
-  const galleryMarquee = document.getElementById('gallery-marquee');
+  const marqueeSp = document.getElementById('gallery-marquee-sp'); // mobile: 3 rows x 4
+  const marqueePc = document.getElementById('gallery-marquee-pc'); // md+:   2 rows x 6
 
-  // "All": md+ shows the 4x3 grid; mobile shows the 3 marquee rows instead of a 2x6 grid
+  // "All": marquee rows at every size (which block shows is decided by md:hidden / md:block)
   const showAll = () => {
     items.forEach(item => { item.style.display = ''; });
-    galleryGrid.classList.add('hidden', 'md:grid');
+    galleryGrid.classList.add('hidden');
     galleryGrid.classList.remove('grid');
-    galleryMarquee.classList.remove('hidden');
+    marqueeSp.classList.remove('hidden');
+    marqueePc.classList.add('md:block');
   };
-  // Category: 4 photos = one row of 4 (md+) or 2x2 (mobile); marquee hidden
+  // Category: 4 photos = one row of 4 (md+) or 2x2 (mobile); marquees hidden
   const showCategory = (cat) => {
     items.forEach(item => { item.style.display = item.dataset.cat === cat ? '' : 'none'; });
-    galleryGrid.classList.remove('hidden', 'md:grid');
+    galleryGrid.classList.remove('hidden');
     galleryGrid.classList.add('grid');
-    galleryMarquee.classList.add('hidden');
+    marqueeSp.classList.add('hidden');
+    marqueePc.classList.remove('md:block');
   };
 
   showAll();
