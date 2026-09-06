@@ -310,6 +310,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .work-body p{font-size:.88rem;color:var(--ink-soft);line-height:1.95;}
 .work-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
 .work-tags li{font-size:.72rem;padding:5px 12px;border-radius:999px;background:var(--bg-alt);color:var(--ink-soft);}
+.work-media{display:block;}
+.work-link{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:.84rem;font-weight:600;color:var(--accent-deep);border-bottom:1.4px solid currentColor;padding-bottom:2px;transition:gap .3s var(--ease),color .3s;}
+.work-link svg{width:16px;height:16px;}
+.work-link:hover{gap:12px;color:var(--accent);}
+.work-link.soon{color:var(--ink-soft);opacity:.6;border-bottom-style:dashed;cursor:default;}
 .works-note{margin-top:22px;font-size:.74rem;color:var(--ink-soft);text-align:right;}
 @media (max-width:820px){.works-grid{grid-template-columns:1fr;}.work-body{padding:24px 22px 28px;}}
 
@@ -653,12 +658,13 @@ footer .flinks a:hover{color:var(--accent-deep);}
     </div>
     <div class="works-grid">
       <article class="work-card reveal d1">
-        <div class="work-media"><img src="assets/work-irodori.jpg" alt="居酒屋「いろどり」のホームページ。スマートフォンとノートパソコンでの表示" loading="lazy"></div>
+        <a class="work-media" href="works/irodori/" target="_blank" rel="noopener" aria-label="いろどりのサイトを見る"><img src="assets/work-irodori.jpg" alt="居酒屋「いろどり」のホームページ。スマートフォンとノートパソコンでの表示" loading="lazy"></a>
         <div class="work-body">
           <span class="work-cat">飲食店 / 居酒屋</span>
           <h3>炭火炉端と旬鮮魚の居酒屋「いろどり」</h3>
           <p>炭火の温かみを感じる暗めのトーンに、ネット予約と電話をファーストビューに配置。スマホでは画面下部に予約ボタンを固定し、見た瞬間に行動できる導線に。</p>
           <ul class="work-tags"><li>スマホ最適化</li><li>ネット予約導線</li><li>SNS流入対応</li></ul>
+          <a class="work-link" href="works/irodori/" target="_blank" rel="noopener">サイトを見る<svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </article>
       <article class="work-card reveal d2">
@@ -668,6 +674,7 @@ footer .flinks a:hover{color:var(--accent-deep);}
           <h3>韓国トレンドヘアサロン「SHU」</h3>
           <p>余白と写真を主役にしたミニマルな構成で、ブランドの世界観を表現。WEB予約とスタイルギャラリーへの導線を絞り込み、迷わせないシンプルさを追求。</p>
           <ul class="work-tags"><li>オリジナルデザイン</li><li>WEB予約導線</li><li>ギャラリー</li></ul>
+          <span class="work-link soon">サイト準備中</span>
         </div>
       </article>
     </div>
