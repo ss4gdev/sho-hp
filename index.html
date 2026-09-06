@@ -419,7 +419,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .method-card .ic-wrap svg{width:19px;height:19px;color:var(--accent);}
 
 .contact-form{display:flex;flex-direction:column;gap:14px;}
-.form-row{display:flex;flex-direction:column;gap:7px;}
+.form-row{display:flex;flex-direction:column;gap:7px;min-width:0;}
+.form-row input,.form-row textarea{width:100%;max-width:100%;min-width:0;display:block;}
 .form-row label{font-size:.76rem;color:rgba(255,255,255,0.75);letter-spacing:.03em;}
 .form-row input,.form-row textarea{
   background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;
@@ -435,14 +436,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .contact-form.hearing{gap:0;}
 .form-sec{padding:26px 0;border-top:1px solid rgba(255,255,255,0.12);}
 .form-sec:first-child{border-top:none;padding-top:4px;}
-.form-sec-title{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
-.form-sec-title .stp{font-family:var(--serif);font-size:.72rem;letter-spacing:.14em;color:var(--accent);}
+.form-sec-title{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:18px;}
+.form-sec-title .stp{font-family:var(--serif);font-size:.72rem;letter-spacing:.14em;color:var(--accent);white-space:nowrap;}
 .form-sec-title h5{margin:0;font-family:var(--serif);font-weight:600;font-size:.96rem;color:#fff;}
-.form-sec-title small{font-size:.72rem;color:rgba(255,255,255,0.5);}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;}
+.form-sec-title small{font-size:.72rem;color:rgba(255,255,255,0.5);white-space:nowrap;}
+.form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 20px;}
 .form-grid .form-row.full{grid-column:1 / -1;}
-.form-row .lbl-req{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.62rem;letter-spacing:.06em;background:var(--accent);color:#fff;vertical-align:middle;}
-.form-row .lbl-opt{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.62rem;letter-spacing:.06em;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);vertical-align:middle;}
+.form-row .lbl-req{display:inline-block;white-space:nowrap;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.62rem;letter-spacing:.06em;background:var(--accent);color:#fff;vertical-align:middle;}
+.form-row .lbl-opt{display:inline-block;white-space:nowrap;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:.62rem;letter-spacing:.06em;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);vertical-align:middle;}
 .chips{display:flex;flex-wrap:wrap;gap:8px;}
 .chips input{position:absolute;opacity:0;width:0;height:0;pointer-events:none;}
 .chips label{
@@ -466,7 +467,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 @media (max-width:900px){
   .contact-inner{padding:50px 26px;}
   .contact-methods{grid-template-columns:1fr;}
-  .form-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:minmax(0,1fr);}
+  .method-card{padding:26px 20px;}
+  .form-sec-title h5{font-size:.92rem;}
   .form-foot .btn{min-width:0;width:100%;}
 }
 
