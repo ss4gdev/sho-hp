@@ -1098,8 +1098,16 @@ form.addEventListener('submit', async (e) => {
   if (!form.reportValidity()) return;
 
   const data = new FormData(form);
+  // 「その他」を選んだ場合、Googleフォーム側の「その他」欄として送る
+  for (const name of ['entry.2141517601', 'entry.1770022696']) {
+    if (data.get(name) === 'その他') {
+      data.set(name, '__other_option__');
+      data.append(name + '.other_option_response', 'その他');
+    }
+  }
   data.append('fvv', '1');
-  data.append('pageHistory', '0');
+  // フォームは4セクション構成。全ページを通過したことを申告しないと2ページ目以降の回答が保存されない
+  data.append('pageHistory', '0,1,2,3');
 
   submitBtn.disabled = true;
   submitBtn.textContent = '送信中…';
