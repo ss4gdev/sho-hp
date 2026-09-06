@@ -100,6 +100,22 @@
     color: #F9F9F8;
   }
 
+  /* Style Gallery "All" on mobile: 3 auto-scrolling rows (one per category), alternating direction.
+     Each track holds the 4 photos twice, so translating by -50% loops seamlessly. */
+  @keyframes gmq-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .gmq-track {
+    display: flex;
+    width: max-content;
+    animation: gmq-scroll var(--gmq-duration, 24s) linear infinite;
+  }
+  .gmq-row[data-dir="right"] .gmq-track { animation-direction: reverse; }
+  @media (prefers-reduced-motion: reduce) {
+    .gmq-track { animation: none; }
+  }
+
   .header-scrolled {
     background-color: rgba(249,249,248,0.92);
     backdrop-filter: blur(10px);
@@ -309,21 +325,62 @@
       <button class="gtab px-6 py-2.5 text-xs tracking-widest uppercase border border-ink/20 transition-colors duration-300" data-filter="short">ショートカット</button>
     </div>
 
-    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    <!-- Grid: all sizes for category tabs; md+ only for "All" (mobile "All" uses the marquee below) -->
+    <div id="gallery-grid" class="hidden md:grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
-      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin" data-featured="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="yoshin"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
 
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
-      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer" data-featured="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="layer"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
 
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
       <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
-      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short" data-featured="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+      <figure class="gitem fade-up img-zoom aspect-[3/4]" data-cat="short"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+    </div>
+
+    <!-- Mobile-only "All" view: 3 marquee rows (right / left / right), one category per row -->
+    <div id="gallery-marquee" class="md:hidden -mx-6 space-y-3 fade-up">
+      <div class="gmq-row overflow-hidden" data-dir="right" style="--gmq-duration: 26s;">
+        <div class="gmq-track">
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt="ヨシンモリスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/yoshin/yoshin-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+        </div>
+      </div>
+      <div class="gmq-row overflow-hidden" data-dir="left" style="--gmq-duration: 30s;">
+        <div class="gmq-track">
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt="レイヤーカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/layer/layer-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+        </div>
+      </div>
+      <div class="gmq-row overflow-hidden" data-dir="right" style="--gmq-duration: 28s;">
+        <div class="gmq-track">
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt="ショートカットスタイル"></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-1.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-2.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-3.jpg" class="w-full h-full object-cover" alt=""></figure>
+          <figure class="w-[31vw] aspect-[3/4] shrink-0 mr-3 overflow-hidden" aria-hidden="true"><img src="images/gallery/short/short-4.jpg" class="w-full h-full object-cover" alt=""></figure>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -657,17 +714,25 @@
   const tabs = document.querySelectorAll('.gtab');
   const items = document.querySelectorAll('.gitem');
 
-  const showFeatured = () => {
-    items.forEach(item => { item.style.display = item.dataset.featured === 'true' ? '' : 'none'; });
-  };
+  const galleryGrid = document.getElementById('gallery-grid');
+  const galleryMarquee = document.getElementById('gallery-marquee');
+
+  // "All": md+ shows the 4x3 grid; mobile shows the 3 marquee rows instead of a 2x6 grid
   const showAll = () => {
     items.forEach(item => { item.style.display = ''; });
+    galleryGrid.classList.add('hidden', 'md:grid');
+    galleryGrid.classList.remove('grid');
+    galleryMarquee.classList.remove('hidden');
   };
+  // Category: 4 photos = one row of 4 (md+) or 2x2 (mobile); marquee hidden
   const showCategory = (cat) => {
     items.forEach(item => { item.style.display = item.dataset.cat === cat ? '' : 'none'; });
+    galleryGrid.classList.remove('hidden', 'md:grid');
+    galleryGrid.classList.add('grid');
+    galleryMarquee.classList.add('hidden');
   };
 
-  showFeatured();
+  showAll();
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
