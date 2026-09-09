@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>お店の武器を、選ばれる理由に変える。| SHO 店舗向けHP制作</title>
 <meta name="description" content="SHO 店舗向けHP制作は、初めてホームページを作る店舗オーナー様に寄り添うWeb制作・伴走サポートです。原稿づくりから構成、公開後の集客まで、専門用語を使わずまるごとサポートします。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 40 40%27%3E%3Crect width=%2740%27 height=%2740%27 rx=%279%27 fill=%27%232b3a4a%27/%3E%3Cpath d=%27M8 29C8 29 13 11 20 11C27 11 32 29 32 29%27 stroke=%27%23c87d55%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 fill=%27none%27/%3E%3Ccircle cx=%2720%27 cy=%2719%27 r=%272.6%27 fill=%27%23c87d55%27/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SHO 店舗向けHP制作">
 <meta property="og:title" content="お店の武器を、選ばれる理由に変える。| SHO 店舗向けHP制作">
@@ -139,8 +140,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 }
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.02rem;font-weight:700;color:#fff;transition:color .4s;}
 .site-header.scrolled .logo{color:var(--ink);}
-.logo .mark{width:30px;height:30px;flex-shrink:0;}
-.logo .mark svg{width:100%;height:100%;}
+.logo .mark{display:block;width:34px;height:34px;flex-shrink:0;}
+.logo .mark img{width:100%;height:100%;display:block;transition:filter .4s;filter:brightness(0) invert(1);}
+.site-header.scrolled .logo .mark img{filter:none;}
 .logo small{display:block;font-family:var(--sans);font-weight:400;font-size:.62rem;letter-spacing:.12em;opacity:.8;margin-top:2px;}
 
 .main-nav{display:flex;align-items:center;gap:38px;}
@@ -460,7 +462,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* ---------- footer ---------- */
 footer{padding:44px 0 130px;text-align:center;}
-footer .fmark{width:30px;height:30px;margin:0 auto 16px;color:var(--accent-deep);}
+footer .fmark{width:40px;height:40px;margin:0 auto 16px;}
+footer .fmark img{width:100%;height:100%;display:block;}
 footer p{font-size:.72rem;color:var(--ink-soft);letter-spacing:.05em;}
 footer .flegal{display:flex;justify-content:center;gap:22px;margin-bottom:14px;font-size:.74rem;}
 .flegal a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;opacity:.8;}
@@ -488,12 +491,7 @@ footer .flinks a:hover{color:var(--accent-deep);}
 <header class="site-header" id="siteHeader">
   <div class="wrap">
     <a href="#top" class="logo">
-      <span class="mark">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 30C6 30 12 10 20 10C28 10 34 30 34 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="20" cy="19" r="2.4" fill="currentColor"/>
-        </svg>
-      </span>
+      <span class="mark"><img src="assets/logo-mark-ink.png" alt="" width="34" height="34"></span>
       <span>SHO<small>店舗向けHP制作</small></span>
     </a>
     <nav class="main-nav">
@@ -940,9 +938,7 @@ footer .flinks a:hover{color:var(--accent-deep);}
 
 <footer>
   <div class="wrap">
-    <div class="fmark">
-      <svg viewBox="0 0 40 40" fill="none"><path d="M6 30C6 30 12 10 20 10C28 10 34 30 34 30" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="20" cy="19" r="2.2" fill="currentColor"/></svg>
-    </div>
+    <div class="fmark"><img src="assets/logo-mark-accent.png" alt="" width="40" height="40"></div>
     <div class="flinks">
       <a href="#about">お悩み</a><a href="#strength">強み</a><a href="#works">制作事例</a><a href="#service">事業内容</a><a href="#faq">FAQ</a><a href="#contact">お問い合わせ</a>
     </div>
