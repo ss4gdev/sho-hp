@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>八本松建設｜暮らしにも、商いにも。伏見に根ざす、丁寧な建築。（架空企業の制作デモ）</title>
+<meta name="description" content="八本松建設は、京都・伏見を想定した架空の工務店デモサイトです。注文住宅・リフォーム・店舗改装の考え方と、架空の施工プランを掲載しています。">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- One viewport-filling video stays behind the entire page. -->
+<div class="site-film" data-journey aria-hidden="true">
+  <video class="site-film__video" id="houseTour" width="1280" height="720"
+         preload="none" muted playsinline disablepictureinpicture tabindex="-1">
+    <source src="assets/video/house-tour-480.mp4" type="video/mp4">
+  </video>
+  <div class="site-film__shade"></div>
+</div>
+<div class="film-controls" aria-label="背景映像の操作">
+  <p class="film-controls__hint" id="tourHint">スクロールに合わせて、住まいを巡る。</p>
+  <p class="film-controls__loading" id="tourLoading" role="status" hidden>映像を読み込んでいます</p>
+  <span class="film-controls__time" aria-hidden="true"><span id="tourTime">00</span> / 30</span>
+  <button class="film-controls__toggle" id="tourToggle" type="button" hidden>映像を固定</button>
+  <noscript><a href="assets/video/house-tour-480.mp4">住宅の映像を見る</a></noscript>
+  <div class="film-controls__track" aria-hidden="true"><span id="tourProgress"></span></div>
+</div>
+
+<!-- 告知バーとヘッダーを1つのsticky要素にまとめる。
+     高さの実測値を app.js が --topbar-h に書き戻すため、
+     オフセットに固定px（旧 --banner-h: 36px）を使わない。 -->
+<div class="topbar" id="topbar">
+  <p class="demo-banner" role="note">
+    <span class="demo-banner__dot" aria-hidden="true"></span>
+    <span class="demo-banner__text">このサイトは<strong>架空企業の制作デモ</strong>です。実在する企業の実績ではありません。</span>
+  </p>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="#top">
+        <span class="brand__name">八本松建設</span>
+        <span class="brand__sub">京都・伏見／注文住宅・リフォーム・店舗改装</span>
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="メインメニュー">
+        <ul class="nav__list">
+          <li><a href="#about">私たちについて</a></li>
+          <li><a href="#services">事業内容</a></li>
+          <li><a href="#works">施工事例</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn--accent header-cta" href="#contact">ご相談</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">
+          <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="nav-toggle__label">メニュー</span>
+        </button>
+      </div>
+    </div>
+  </header>
+</div>
+<div class="nav-scrim" id="navScrim" hidden></div>
+
+<main id="main">
+
+  <section class="intro" id="top" aria-labelledby="introTitle">
+    <div class="container intro__copy">
+      <p class="intro__eyebrow">京都・伏見の家づくり</p>
+      <h1 class="intro__title" id="introTitle">八本松建設</h1>
+      <p class="intro__lead">暮らしにも、商いにも。</p>
+      <p class="intro__description">伏見で考える、これからの住まいとお店。<br>その先の暮らしを、一緒に描く。</p>
+      <div class="intro__actions">
+        <a class="btn btn--accent" href="#works">施工事例を見る</a>
+        <a class="btn btn--outline" href="#contact">家づくり・改装の相談</a>
+      </div>
+      <a class="intro__scroll" href="#about">スクロールして、住まいの内側へ <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+
+  <!-- ============ 会社紹介 ============ -->
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="container about__grid">
+      <div class="about__intro">
+        <p class="intro__eyebrow">私たちの家づくり</p>
+        <p class="about__statement">家族の時間も、<br>お店のこれからも。</p>
+        <p class="caption">京都・伏見／注文住宅・リフォーム・店舗改装</p>
+      </div>
+      <div class="about__text">
+        <h2 class="section-title" id="about-title">建てる前に、よく話す。</h2>
+        <p>
+          家族の過ごし方。お店で届けたい時間。図面だけでは分からない思いから、建築は始まると考えています。
+          八本松建設は、京都・伏見を舞台に、暮らしと商いに寄り添う工務店を想定したデモサイトです。
+        </p>
+        <dl class="facts">
+          <div class="facts__row">
+            <dt>名称</dt>
+            <dd>八本松建設（架空）</dd>
+          </div>
+          <div class="facts__row">
+            <dt>想定エリア</dt>
+            <dd>京都市伏見区とその周辺を想定</dd>
+          </div>
+          <div class="facts__row">
+            <dt>事業領域</dt>
+            <dd>注文住宅／リフォーム／店舗改装</dd>
+          </div>
+          <div class="facts__row">
+            <dt>この表示について</dt>
+            <dd>架空デモのため、所在地・電話番号・創業年・代表者名は掲載していません。</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 事業内容 ============ -->
+  <section class="section section--muted services" id="services" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title" id="services-title">暮らしと商い、三つの入口。</h2>
+        <p class="section-lead">
+          どこから話せばよいか決まっていなくても構いません。近いものから読んでみてください。
+        </p>
+      </div>
+
+      <div class="services__list">
+        <article class="service">
+          <span class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg>
+          </span>
+          <h3 class="service__title">注文住宅</h3>
+          <p class="service__lead">家族の変化も見据えた、無理のない住まいを。</p>
+          <p class="service__body">
+            朝の支度が重なる洗面まわり、帰宅してから荷物を置くまでの数歩、子どもが大きくなった後の個室の使い方。
+            いまの暮らしと十年後の暮らしを並べて、動線と収納の位置を決めていきます。
+            素材は手触りと手入れのしやすさで選び、置き家具まで含めて広さを確かめます。
+          </p>
+        </article>
+
+        <article class="service">
+          <span class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M14.7 6.3a4 4 0 0 1 5 5l-1.4 1.4"/><path d="M9.3 17.7a4 4 0 0 1-5-5l1.4-1.4"/><path d="M8 16 16 8"/><path d="M3 21l3-1 1-3"/></svg>
+          </span>
+          <h3 class="service__title">リフォーム</h3>
+          <p class="service__lead">今ある良さを残し、毎日の不便を整える。</p>
+          <p class="service__body">
+            住み慣れた家には、変えないほうがよい部分があります。日当たりのよい居間、使い込まれた建具、庭からの風。
+            そこは残したうえで、冷えやすい水まわり、暗い廊下、足りない収納といった不便を先に片づけます。
+            段差や手すりなど、これから必要になる部分もあわせて検討します。
+          </p>
+        </article>
+
+        <article class="service">
+          <span class="service__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M3 9h18l-1.2-4.2A1.5 1.5 0 0 0 18.4 3.7H5.6a1.5 1.5 0 0 0-1.4 1.1Z"/><path d="M4.5 9v10.5h15V9"/><path d="M9.5 19.5V14h5v5.5"/></svg>
+          </span>
+          <h3 class="service__title">店舗改装</h3>
+          <p class="service__lead">お店らしさと、働きやすさをひとつに。</p>
+          <p class="service__body">
+            客席から何が見えるか、厨房から何歩で料理が届くか。お店の印象と日々の作業は、同じ図面の上にあります。
+            カウンターの高さ、配膳と下げ膳がすれ違う幅、洗い場から客席までの視線。
+            営業時間や人数の想定を聞きながら、続けやすい配置を探します。
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 施工事例 ============ -->
+  <section class="section works" id="works" aria-labelledby="works-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title" id="works-title">考えかたが見える、三つの施工事例。</h2>
+        <p class="notice">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>すべて架空の施工プランです。実在する企業の実績ではありません。</span>
+        </p>
+      </div>
+
+      <div class="filters">
+        <span class="filters__label" id="filterLabel">カテゴリで絞り込む</span>
+        <div class="filters__group" role="group" aria-labelledby="filterLabel">
+          <button type="button" class="chip" data-filter="all" aria-pressed="true">すべて</button>
+          <button type="button" class="chip" data-filter="house" aria-pressed="false">注文住宅</button>
+          <button type="button" class="chip" data-filter="renovation" aria-pressed="false">リフォーム</button>
+          <button type="button" class="chip" data-filter="shop" aria-pressed="false">店舗改装</button>
+        </div>
+        <p class="filters__status" id="filterStatus" aria-live="polite">3件を表示中</p>
+      </div>
+
+      <ul class="work-grid" id="workGrid">
+        <li class="work-card reveal" data-category="house">
+          <button type="button" class="work-card__btn" data-modal="modal-house" aria-haspopup="dialog">
+            <span class="work-card__media"><span class="work-card__number" aria-hidden="true">01</span>
+              <span class="tag">注文住宅</span>
+            </span>
+            <span class="work-card__body">
+              <span class="work-card__title">庭とつながる、家族の住まい</span>
+              <span class="work-card__excerpt">居間と庭を一続きに考え、家族の居場所を一階にまとめた計画。</span>
+              <span class="work-card__more">
+                詳しく見る
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </span>
+          </button>
+        </li>
+
+        <li class="work-card reveal" data-category="renovation">
+          <button type="button" class="work-card__btn" data-modal="modal-renovation" aria-haspopup="dialog">
+            <span class="work-card__media"><span class="work-card__number" aria-hidden="true">02</span>
+              <span class="tag">リフォーム</span>
+            </span>
+            <span class="work-card__body">
+              <span class="work-card__title">光が巡る、住まいの改修</span>
+              <span class="work-card__excerpt">残す部分を決めることから始め、暗さと寒さを先に解いた改修計画。</span>
+              <span class="work-card__more">
+                詳しく見る
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </span>
+          </button>
+        </li>
+
+        <li class="work-card reveal" data-category="shop">
+          <button type="button" class="work-card__btn" data-modal="modal-shop" aria-haspopup="dialog">
+            <span class="work-card__media"><span class="work-card__number" aria-hidden="true">03</span>
+              <span class="tag">店舗改装</span>
+            </span>
+            <span class="work-card__body">
+              <span class="work-card__title">街にひらく、小さな食堂</span>
+              <span class="work-card__excerpt">カウンターと厨房の距離を軸に、接客と調理を無理なくつないだ計画。</span>
+              <span class="work-card__more">
+                詳しく見る
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </span>
+          </button>
+        </li>
+      </ul>
+
+      <p class="works__empty" id="worksEmpty" hidden>該当する事例がありません。ほかのカテゴリをお試しください。</p>
+    </div>
+  </section>
+
+  <!-- ============ 選ばれる理由（提案姿勢） ============ -->
+  <section class="section section--muted reasons" id="reasons" aria-labelledby="reasons-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title" id="reasons-title">相談のときの、三つの姿勢。</h2>
+      </div>
+      <ul class="reasons__list">
+        <li class="reason">
+          <h3 class="reason__title">思いを整理する対話</h3>
+          <p>
+            「なんとなく使いにくい」から始めて構いません。どの時間に、誰が、何をしているか。
+            そこを一緒に言葉にしていくと、直したい場所と、変えなくてよい場所が自然と分かれてきます。
+          </p>
+        </li>
+        <li class="reason">
+          <h3 class="reason__title">暮らしと仕事に合う設計</h3>
+          <p>
+            間取りは、家事の順番や開店前の仕込みといった実際の動きに沿って考えます。
+            図面に家具と人の動きを重ね、朝と夜、平日と休日で無理が出ないかを確かめます。
+          </p>
+        </li>
+        <li class="reason">
+          <h3 class="reason__title">素材と仕上がりへの目配り</h3>
+          <p>
+            手が触れるところ、汚れが溜まるところ、日が当たり続けるところ。
+            見た目だけでなく、数年後の手入れまで含めて、素材と組み合わせ方を選びます。
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 相談から施工 ============ -->
+  <section class="section flow" id="flow" aria-labelledby="flow-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title" id="flow-title">はじめの一歩から、お引き渡しまで。</h2>
+        <p class="section-lead">デモ上の想定フローとして掲載しています。</p>
+      </div>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num" aria-hidden="true">1</span>
+          <h3 class="step__title">ご相談</h3>
+          <p>フォームからご連絡ください。まとまっていない段階でも構いません。</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">2</span>
+          <h3 class="step__title">現地確認・ヒアリング</h3>
+          <p>建物と周辺を見せていただき、困りごとと希望を伺います。</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">3</span>
+          <h3 class="step__title">プラン・お見積もり</h3>
+          <p>考え方をご説明したうえで、図面と費用の内訳をお出しします。</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">4</span>
+          <h3 class="step__title">ご契約・施工</h3>
+          <p>内容にご納得いただいてから着工し、進み具合を共有します。</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">5</span>
+          <h3 class="step__title">お引き渡し</h3>
+          <p>使い方と手入れの方法をご説明し、引き渡します。</p>
+        </li>
+      </ol>
+
+      <p class="flow__cta">
+        <a class="btn btn--accent" href="#contact">この流れで相談する</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 採用 ============ -->
+  <section class="section band recruit" id="recruit" aria-labelledby="recruit-title">
+    <div class="container band__grid">
+      <div>
+        <h2 class="section-title section-title--light" id="recruit-title">地域の暮らしを、つくる側へ。</h2>
+      </div>
+      <div>
+        <p class="band__text">
+          人の話を聞くところから始まる仕事です。家づくりの考え方に関心のある方、
+          現場でものごとを整えていく仕事に手応えを感じる方と、一緒に働きたいと考えています。
+          設計・現場管理のどちらも、まずは話を聞くところからで構いません。
+        </p>
+        <p class="notice notice--onDark">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>採用案内は架空デモです。募集職種・給与・雇用条件は掲載していません。</span>
+        </p>
+        <p>
+          <button type="button" class="btn btn--light" id="recruitCta">採用について相談する</button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <h2 class="section-title" id="faq-title">よくいただく、四つの質問。</h2>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion__item">
+          <h3 class="accordion__heading">
+            <button type="button" class="accordion__btn" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+              <span>小さなリフォームでも相談できますか。</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </h3>
+          <div class="accordion__panel" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
+            <p>
+              はい。一室の改修や水まわりだけのご相談も想定しています。
+              範囲が小さくても、現地を見せていただいたうえで考え方とお見積もりをお出しする流れは変わりません。
+              「どこまでやるか決めきれていない」という段階のご相談も歓迎します。
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion__item">
+          <h3 class="accordion__heading">
+            <button type="button" class="accordion__btn" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+              <span>店舗の改装も相談できますか。</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </h3>
+          <div class="accordion__panel" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+            <p>
+              はい。飲食店をはじめとした小規模な店舗の改装を想定しています。
+              客席と厨房の動線、洗い場やカウンターの位置など、日々の作業に直結する部分から一緒に検討します。
+              営業を続けながらの工事についても、想定できる範囲でご相談ください。
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion__item">
+          <h3 class="accordion__heading">
+            <button type="button" class="accordion__btn" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+              <span>何を準備して相談すればよいですか。</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </h3>
+          <div class="accordion__panel" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+            <p>
+              特別な準備は不要です。気になっている場所の写真や、間取りの分かるものがあれば話が早くなりますが、
+              なくても構いません。「朝の支度が重なって困る」「夕方に暗い」といった困りごとの言葉だけでも、
+              そこから一緒に整理していきます。
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion__item">
+          <h3 class="accordion__heading">
+            <button type="button" class="accordion__btn" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+              <span>相談フォームから実際に送信されますか。</span>
+              <svg class="accordion__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </h3>
+          <div class="accordion__panel" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+            <p>
+              <strong>送信されません。</strong>
+              このサイトは架空企業の制作デモで、フォームは画面の動きを確認するためのものです。
+              入力した内容はどこにも送信されず、保存もされません。完了画面まで進んでも同じです。
+              ページを閉じるか再読み込みすると入力内容は消えます。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 問い合わせ ============ -->
+  <section class="section section--muted contact" id="contact" aria-labelledby="contact-title">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <h2 class="section-title" id="contact-title">まだ、まとまっていない相談も。</h2>
+        <p class="section-lead">
+          聞きたいことがひとつだけ、という段階でも構いません。内容を拝見してからご連絡の方法を考えます。
+        </p>
+      </div>
+
+      <ol class="progress" id="formProgress" aria-label="入力の進み具合">
+        <li class="progress__item is-current" data-step="input" aria-current="step"><span>入力</span></li>
+        <li class="progress__item" data-step="confirm"><span>確認</span></li>
+        <li class="progress__item" data-step="done"><span>完了</span></li>
+      </ol>
+
+      <div class="form-card">
+
+        <!-- ---- Step 1: 入力 ---- -->
+        <div id="stepInput">
+          <p class="notice">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+            <span>デモのためのフォームです。入力内容は送信も保存もされません。</span>
+          </p>
+
+          <div class="error-summary" id="errorSummary" role="alert" tabindex="-1" hidden>
+            <h3 class="error-summary__title" id="errorSummaryTitle">入力内容をご確認ください</h3>
+            <ul class="error-summary__list" id="errorSummaryList"></ul>
+          </div>
+
+          <form id="contactForm" novalidate>
+            <div class="field">
+              <label class="field__label" for="topic">
+                ご相談の種別 <span class="req">必須</span>
+              </label>
+              <select id="topic" name="topic" class="control" required aria-describedby="topic-error">
+                <option value="">選択してください</option>
+                <option value="注文住宅">注文住宅</option>
+                <option value="リフォーム">リフォーム</option>
+                <option value="店舗改装">店舗改装</option>
+                <option value="採用">採用</option>
+                <option value="その他">その他</option>
+              </select>
+              <p class="field__error" id="topic-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="company">
+                会社名・店名 <span class="opt">任意</span>
+              </label>
+              <input type="text" id="company" name="company" class="control" autocomplete="organization"
+                     maxlength="80" aria-describedby="company-help">
+              <p class="field__help" id="company-help">事業者の方はご記入ください。</p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="name">
+                お名前 <span class="req">必須</span>
+              </label>
+              <input type="text" id="name" name="name" class="control" autocomplete="name"
+                     maxlength="80" required aria-describedby="name-error">
+              <p class="field__error" id="name-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="email">
+                メールアドレス <span class="req">必須</span>
+              </label>
+              <input type="email" id="email" name="email" class="control" autocomplete="email"
+                     inputmode="email" maxlength="120" required aria-describedby="email-help email-error">
+              <p class="field__help" id="email-help">デモのため、このアドレスへは何も送信されません。</p>
+              <p class="field__error" id="email-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="message">
+                ご相談内容 <span class="req">必須</span>
+              </label>
+              <textarea id="message" name="message" class="control" rows="6" maxlength="1000"
+                        required aria-describedby="message-help message-error"></textarea>
+              <p class="field__help" id="message-help">気になっている場所や、困っていることをそのままお書きください。1000文字まで。</p>
+              <p class="field__error" id="message-error" hidden></p>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn--accent btn--lg">入力内容を確認する</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ---- Step 2: 確認 ---- -->
+        <div id="stepConfirm" hidden>
+          <h3 class="step-title" id="confirmTitle" tabindex="-1">入力内容の確認</h3>
+          <p class="step-desc">この内容でよろしければ、下のボタンへお進みください。</p>
+
+          <dl class="review">
+            <div class="review__row"><dt>ご相談の種別</dt><dd id="rv-topic"></dd></div>
+            <div class="review__row"><dt>会社名・店名</dt><dd id="rv-company"></dd></div>
+            <div class="review__row"><dt>お名前</dt><dd id="rv-name"></dd></div>
+            <div class="review__row"><dt>メールアドレス</dt><dd id="rv-email"></dd></div>
+            <div class="review__row"><dt>ご相談内容</dt><dd id="rv-message" class="review__message"></dd></div>
+          </dl>
+
+          <p class="notice notice--warn">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 4 2.5 20h19Z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <span>これはデモです。次へ進んでも内容は送信されません。</span>
+          </p>
+
+          <div class="form-actions form-actions--split">
+            <button type="button" class="btn btn--outline" id="backToEdit">戻って編集する</button>
+            <button type="button" class="btn btn--accent" id="submitFinal">この内容で進む（デモ）</button>
+          </div>
+        </div>
+
+        <!-- ---- Step 3: 完了 ---- -->
+        <div id="stepDone" hidden>
+          <div class="done">
+            <span class="done__mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M4 12.5 9.5 18 20 7"/></svg>
+            </span>
+            <h3 class="step-title" id="doneTitle" tabindex="-1">画面上の送信手続きが完了しました</h3>
+            <p class="done__lead">
+              実際のサイトであれば、この時点で担当者に内容が届き、折り返しご連絡する流れになります。
+            </p>
+            <p class="notice notice--warn done__notice">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 4 2.5 20h19Z"/><path d="M12 10v4M12 17h.01"/></svg>
+              <span><strong>デモのため送信されていません。</strong>入力された内容はどこにも送信されず、保存もされていません。</span>
+            </p>
+            <div class="form-actions">
+              <button type="button" class="btn btn--outline" id="restartForm">もう一度入力する</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div>
+      <p class="footer__brand">八本松建設</p>
+      <p class="footer__meta">京都市伏見区を想定</p>
+      <p class="footer__meta">注文住宅・リフォーム・店舗改装</p>
+    </div>
+    <nav class="footer__nav" aria-label="フッターメニュー">
+      <ul>
+        <li><a href="#about">私たちについて</a></li>
+        <li><a href="#services">事業内容</a></li>
+        <li><a href="#works">施工事例</a></li>
+        <li><a href="#reasons">相談のときの姿勢</a></li>
+        <li><a href="#flow">相談から施工まで</a></li>
+        <li><a href="#recruit">採用</a></li>
+        <li><a href="#faq">よくあるご質問</a></li>
+        <li><a href="#contact">ご相談</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container">
+    <p class="footer__disclaimer">
+      架空企業の制作事例です。掲載映像・施工プランはイメージであり、実在する企業の実績ではありません。
+    </p>
+  </div>
+</footer>
+
+<!-- ============ モーダル ============ -->
+<div class="modal" id="modal-house" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-house-title" tabindex="-1">
+    <button type="button" class="modal__close" data-close aria-label="閉じる">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="modal__scroll">
+      <div class="modal__body">
+        <h2 class="modal__title" id="modal-house-title">庭とつながる、家族の住まい</h2>
+        <p class="modal__meta"><span class="tag">注文住宅</span><span class="modal__note">架空の施工プランです。実在する施工実績ではありません。</span></p>
+
+        <h3 class="modal__sub">計画のテーマ</h3>
+        <p>
+          家族が自然と一階に集まる住まいを想定しました。居間と庭を別のものとして扱わず、
+          縁側のような中間の場所を挟んで一続きに考えています。
+          来客の多い暮らしでも、家族の生活が丸ごと見えてしまわないよう、玄関からの視線を整理しました。
+        </p>
+
+        <h3 class="modal__sub">設計のポイント</h3>
+        <ol class="points">
+          <li>
+            <strong>庭に開く居間と、その手前の緩衝</strong>
+            大きな開口の内側に土間と縁側を挟み、夏の日射しと冬の冷えを一段やわらげる想定です。
+            庭側の植栽は目隠しを兼ねます。
+          </li>
+          <li>
+            <strong>玄関から続く土間収納</strong>
+            外で使うものを室内に持ち込まずに済むよう、玄関脇に土間の収納を設けます。
+            買い物から台所までの動線も、ここを通って短くなります。
+          </li>
+          <li>
+            <strong>二階を後から仕切れる構成</strong>
+            子どもが小さいうちは広く使い、後から間仕切りを足せる形にしています。
+            窓と照明、収納の位置を先に分けて計画しておく想定です。
+          </li>
+        </ol>
+
+        <p class="modal__cta">
+          <button type="button" class="btn btn--accent" data-goto-contact data-topic="注文住宅">この計画について相談する</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-renovation" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-renovation-title" tabindex="-1">
+    <button type="button" class="modal__close" data-close aria-label="閉じる">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="modal__scroll">
+      <div class="modal__body">
+        <h2 class="modal__title" id="modal-renovation-title">光が巡る、住まいの改修</h2>
+        <p class="modal__meta"><span class="tag">リフォーム</span><span class="modal__note">架空の施工プランです。実在する施工実績ではありません。</span></p>
+
+        <h3 class="modal__sub">計画のテーマ</h3>
+        <p>
+          長く住まわれた家の、残したい部分を先に決めるところから始める想定の計画です。
+          間取りを大きく作り替えるのではなく、光と風の通り道を整えることを中心に置きました。
+          日中に家のどこにいても暗さを感じない状態を目標にしています。
+        </p>
+
+        <h3 class="modal__sub">設計のポイント</h3>
+        <ol class="points">
+          <li>
+            <strong>庭側の開口を作り替える</strong>
+            既存の壁と柱を活かしたうえで、庭に面した開口を広げ、床の高さを揃えます。
+            外の緑が室内の奥まで届くようにする想定です。
+          </li>
+          <li>
+            <strong>暗い廊下を居間に取り込む</strong>
+            使われていなかった廊下の一部を居間側に取り込み、行き止まりをなくします。
+            動線が短くなり、明かりも回りやすくなります。
+          </li>
+          <li>
+            <strong>水まわりの寒さを先に解く</strong>
+            断熱と窓の性能、暖房の位置を見直し、冬場の温度差を小さくします。
+            見た目の仕上げよりも先に検討する部分として扱います。
+          </li>
+        </ol>
+
+        <p class="modal__cta">
+          <button type="button" class="btn btn--accent" data-goto-contact data-topic="リフォーム">この計画について相談する</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-shop" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-shop-title" tabindex="-1">
+    <button type="button" class="modal__close" data-close aria-label="閉じる">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="modal__scroll">
+      <div class="modal__body">
+        <h2 class="modal__title" id="modal-shop-title">街にひらく、小さな食堂</h2>
+        <p class="modal__meta"><span class="tag">店舗改装</span><span class="modal__note">架空の施工プランです。実在する施工実績ではありません。</span></p>
+
+        <h3 class="modal__sub">計画のテーマ</h3>
+        <p>
+          ひとりでも入りやすく、常連のいる店。その両方が成り立つ配置を想定しました。
+          カウンターを主役に据えつつ、街に面した窓際に小さなテーブル席を置き、
+          通りからの見え方と、中にいるときの落ち着きを両立させています。
+        </p>
+
+        <h3 class="modal__sub">設計のポイント</h3>
+        <ol class="points">
+          <li>
+            <strong>厨房とカウンターの距離</strong>
+            調理から提供までが数歩で完結する配置にし、作り手が客席に背を向ける時間を減らします。
+            洗い場は客席から見えにくい位置に寄せる想定です。
+          </li>
+          <li>
+            <strong>通りとの距離を選べる席</strong>
+            窓際のテーブル席とカウンターで、街との距離感を変えています。
+            ひとりの客と連れのある客が、それぞれ落ち着ける場所を選べる構成です。
+          </li>
+          <li>
+            <strong>掃除と入れ替えのしやすさ</strong>
+            床と壁の取り合わせ、カウンター下の収まり方を、日々の清掃を前提に決めます。
+            棚やカウンターなどの備品は、将来の配置替えを見込んで、動かせるものと造り付けを分ける想定です。
+          </li>
+        </ol>
+
+        <p class="modal__cta">
+          <button type="button" class="btn btn--accent" data-goto-contact data-topic="店舗改装">この計画について相談する</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js" defer></script>
+<script src="journey.js" defer></script>
+</body>
+</html>
