@@ -2,10 +2,10 @@
   ============================================================
   炭火炉端と旬鮮料理 いろどり ｜ 公式サイト
   ------------------------------------------------------------
-  冒頭は「映像ステージ」。スクロールに合わせて店内をめぐる動画が進み、
-  場面ごとの文章が1行ずつ現れます（stage.js）。
-    ・各行を出す秒数 … このファイルの .ln 要素の data-in / data-out
-    ・スクロール量の配分 … stage.js の SEGMENTS
+  冒頭は「映像ステージ」。ページを下へ進めると背景の動画も進み、
+  場面ごとの文章がページと一緒に流れながら1行ずつ現れます（stage.js）。
+    ・場面ごとの動画の秒数 … このファイルの .scene の data-from / data-to
+    ・場面ごとの長さ（スクロール量） … 同じく .scene の style「--h」
 
   「お知らせ・ブログ」は、Googleスプレッドシートを編集するだけで更新できます。
   接続方法は app.js 冒頭の「NEWS_SHEET_CSV_URL」付近のコメントに書かれています。
@@ -148,130 +148,127 @@
 
 <!-- ============================================================
      映像ステージ
-     スクロール位置 → 動画の再生位置 → 文字の表示 が常に一致する。
-     各行の data-in / data-out は「動画の秒数」。この秒数の間だけ表示される。
-     スクロール量の配分は stage.js の SEGMENTS で調整できる。
+     背景の動画は画面に敷いたまま、文章はふつうのページと同じように流れていく。
+     ページを下へ進めるほど動画も進み、各場面の文章が画面中央に来たとき、
+     動画もちょうどその場面になる（場面の境目 = data-from / data-to 秒）。
+     各場面の長さ（スクロール量）は style の --h（画面の高さ = 100）で調整できる。
      ============================================================ -->
 <section class="stage" id="top" aria-label="いろどりの店内をめぐる">
-  <div class="stage__viewport">
 
-    <div class="stage__film" aria-hidden="true">
-      <img class="stage__poster" src="assets/video/poster-720.jpg" srcset="assets/video/poster-480.jpg 854w, assets/video/poster-720.jpg 1280w" sizes="100vw" alt="" width="1280" height="720" fetchpriority="high">
-      <video class="stage__video" id="stageVideo" muted playsinline disablepictureinpicture preload="none" tabindex="-1" width="1280" height="720"></video>
-      <div class="stage__scrim stage__scrim--bottom"></div>
-      <div class="stage__scrim stage__scrim--right"></div>
-      <div class="stage__scrim stage__scrim--left"></div>
-      <div class="stage__scrim stage__scrim--topright"></div>
-      <div class="stage__scrim stage__scrim--top"></div>
-      <div class="stage__vignette"></div>
-      <div class="stage__veil"></div>
-    </div>
-
-    <div class="stage__scenes">
-
-      <article class="scene scene--bottom" id="ch-noren" data-from="0" data-to="1.2" data-side="bottom" data-pos="50%" style="--still: url(assets/stills/noren.webp)">
-        <div class="scene__body">
-          <p class="ln eyebrow" data-in="0" data-out="1.1"><span>神楽坂駅 徒歩3分｜炭火炉端と産直旬鮮魚</span></p>
-          <h1 class="ln catch" data-in="0" data-out="1.1">一杯に、<br class="u-sp">旬をそえて。</h1>
-          <p class="ln scroll-cue" data-in="0" data-out="0.5" aria-hidden="true">SCROLL</p>
-        </div>
-      </article>
-
-      <article class="scene scene--right" id="ch-entrance" data-from="1.2" data-to="4" data-side="right" data-pos="45%" style="--still: url(assets/stills/entrance.webp)">
-        <div class="scene__body">
-          <p class="ln lead" data-in="1.4" data-out="3.8">職人が焼き上げる炭火の原始焼きと、</p>
-          <p class="ln lead" data-in="1.9" data-out="3.8">厳選地酒を落ち着いた和空間で。</p>
-        </div>
-      </article>
-
-      <article class="scene scene--left" id="ch-robata" data-from="4" data-to="7.5" data-side="left" data-pos="50%" style="--still: url(assets/stills/robata.webp)">
-        <div class="scene__body">
-          <p class="ln eyebrow" data-in="4.2" data-out="7.3"><span>OUR COMMITMENT</span></p>
-          <h2 class="ln heading" data-in="4.2" data-out="7.3">いろどりのこだわり</h2>
-          <p class="ln text" data-in="4.8" data-out="7.3">毎朝仕入れる産直の旬鮮魚</p>
-          <p class="ln text" data-in="5.6" data-out="7.3">備長炭でじっくり焼き上げる本格炉端</p>
-          <p class="ln text" data-in="6.4" data-out="7.3">料理の香りを味わう</p>
-        </div>
-      </article>
-
-      <article class="scene scene--topright" id="ch-fish" data-from="7.5" data-to="9.5" data-side="topright" data-pos="40%" style="--still: url(assets/stills/fish.webp)">
-        <div class="scene__body">
-          <p class="ln eyebrow" data-in="7.8" data-out="9.3"><span>TODAY'S FISH</span></p>
-          <p class="ln lead lead--lg" data-in="7.8" data-out="9.3">目利きが選んだ本日の魚。</p>
-        </div>
-      </article>
-
-      <article class="scene scene--right scene--tate" id="ch-sake" data-from="9.5" data-to="11" data-side="right" data-pos="22%" data-graded style="--still: url(assets/stills/sake.webp)">
-        <div class="scene__body">
-          <h2 class="ln tate" data-in="9.6" data-out="10.9" aria-label="日本酒"><span aria-hidden="true">日</span><span aria-hidden="true">本</span><span aria-hidden="true">酒</span></h2>
-          <div class="scene__col">
-            <p class="ln eyebrow" data-in="9.6" data-out="10.9"><span>SAKE &amp; DRINK</span></p>
-            <p class="ln text" data-in="9.9" data-out="10.9">各地の蔵元から厳選した純米酒・純米吟醸を常時10種以上。</p>
-            <p class="ln text text--sub" data-in="10.2" data-out="10.9">辛口から甘口まで、季節のおすすめを利き酒セットでも。</p>
-            <p class="ln text text--small" data-in="10.5" data-out="10.9">焼酎・ビール・ハイボール・サワー・ワイン・ソフトドリンクも。</p>
-          </div>
-        </div>
-      </article>
-
-      <article class="scene scene--right" id="ch-seats" data-from="11" data-to="12.8" data-side="right" data-pos="35%" style="--still: url(assets/stills/seats.webp)">
-        <div class="scene__body">
-          <p class="ln eyebrow" data-in="11.5" data-out="12.7"><span>ATMOSPHERE</span></p>
-          <h2 class="ln heading" data-in="11.5" data-out="12.7">店内</h2>
-          <p class="ln text" data-in="11.8" data-out="12.7">カウンター 8席 ／ テーブル 20席</p>
-          <p class="ln text text--sub" data-in="12.1" data-out="12.7">全席禁煙・個室カウンター完備</p>
-        </div>
-      </article>
-
-      <article class="scene scene--left scene--tate" id="ch-signature" data-from="12.8" data-to="14.4" data-side="left" data-pos="46%" data-graded style="--still: url(assets/stills/signature.webp)">
-        <div class="scene__body">
-          <h2 class="ln tate" data-in="12.9" data-out="14.35" aria-label="名物"><span aria-hidden="true">名</span><span aria-hidden="true">物</span></h2>
-          <div class="scene__col scene__col--swap">
-            <p class="ln eyebrow" data-in="12.9" data-out="14.35"><span>SIGNATURE</span></p>
-            <div class="swap">
-              <ul class="swap__set" aria-label="名物料理">
-                <li class="ln text" data-in="12.95" data-out="13.8">極上鮮魚の刺身盛り合わせ</li>
-                <li class="ln text" data-in="13.2" data-out="13.8">特製炭火焼き鳥・串焼き五本盛り</li>
-                <li class="ln text" data-in="13.45" data-out="13.8">天然鮎の塩焼き</li>
-              </ul>
-              <ul class="swap__set" aria-label="コース（2時間飲み放題付き）">
-                <li class="ln text course" data-in="13.85" data-out="14.35"><b>彩りコース</b> 5,500円<small>全8品・2H飲み放題</small></li>
-                <li class="ln text course" data-in="14.0" data-out="14.35"><b>名物三種コース</b> 6,800円<small>全10品・2H飲み放題</small></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="scene scene--top" id="ch-welcome" data-from="14.4" data-to="99" data-side="top" data-pos="46%" style="--still: url(assets/stills/welcome.webp)">
-        <div class="scene__body">
-          <h2 class="ln welcome" data-in="14.5">席へ、どうぞ。</h2>
-          <p class="ln ln--action" data-in="14.7"><a class="btn btn--shu btn--lg" href="#reservation">ご予約へ進む</a></p>
-        </div>
-      </article>
-
-    </div>
-
-    <nav class="progress" aria-label="映像の章">
-      <div class="progress__track" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
-      <div class="progress__row">
-        <a class="progress__ch" href="#ch-noren" data-time="0">暖簾</a>
-        <a class="progress__ch" href="#ch-entrance" data-time="1.5">炉端</a>
-        <a class="progress__ch" href="#ch-fish" data-time="7.9">鮮魚</a>
-        <a class="progress__ch" href="#ch-sake" data-time="9.7">日本酒</a>
-        <a class="progress__ch" href="#ch-seats" data-time="11.6">店内</a>
-        <a class="progress__ch" href="#ch-signature" data-time="13.0">名物</a>
-        <a class="progress__ch" href="#ch-welcome" data-time="14.8">席</a>
-        <span class="progress__now" id="chapterNow" aria-hidden="true">暖簾</span>
-        <a class="progress__skip" href="#reservation">映像をとばして予約へ<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </nav>
-
-    <p class="stage__status" id="stageStatus" role="status" hidden>映像を読み込んでいます</p>
+  <div class="stage__film" aria-hidden="true">
+    <img class="stage__poster" src="assets/video/poster-720.jpg" srcset="assets/video/poster-480.jpg 854w, assets/video/poster-720.jpg 1280w" sizes="100vw" alt="" width="1280" height="720" fetchpriority="high">
+    <video class="stage__video" id="stageVideo" muted playsinline disablepictureinpicture preload="none" tabindex="-1" width="1280" height="720"></video>
+    <div class="stage__scrim stage__scrim--bottom"></div>
+    <div class="stage__scrim stage__scrim--right"></div>
+    <div class="stage__scrim stage__scrim--left"></div>
+    <div class="stage__scrim stage__scrim--center"></div>
+    <div class="stage__vignette"></div>
   </div>
+
+  <div class="stage__scenes">
+
+    <article class="scene scene--bottom" id="ch-noren" data-from="0" data-to="1.2" data-side="bottom" data-pos="50%" style="--h: 100; --still: url(assets/stills/noren.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>神楽坂駅 徒歩3分｜炭火炉端と産直旬鮮魚</span></p>
+        <h1 class="ln catch">一杯に、<br class="u-sp">旬をそえて。</h1>
+        <p class="ln scroll-cue" aria-hidden="true">SCROLL</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-entrance" data-from="1.2" data-to="4" data-side="right" data-pos="45%" style="--h: 120; --still: url(assets/stills/entrance.webp)">
+      <div class="scene__body">
+        <p class="ln lead">職人が焼き上げる炭火の原始焼きと、</p>
+        <p class="ln lead">厳選地酒を落ち着いた和空間で。</p>
+      </div>
+    </article>
+
+    <article class="scene scene--left" id="ch-robata" data-from="4" data-to="7.5" data-side="left" data-pos="50%" style="--h: 150; --still: url(assets/stills/robata.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>OUR COMMITMENT</span></p>
+        <h2 class="ln heading">いろどりのこだわり</h2>
+        <p class="ln text">毎朝仕入れる産直の旬鮮魚</p>
+        <p class="ln text">備長炭でじっくり焼き上げる本格炉端</p>
+        <p class="ln text">料理の香りを味わう</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-fish" data-from="7.5" data-to="9.5" data-side="right" data-pos="40%" style="--h: 100; --still: url(assets/stills/fish.webp)">
+      <div class="scene__body scene__body--end">
+        <p class="ln eyebrow"><span>TODAY'S FISH</span></p>
+        <p class="ln lead lead--lg">目利きが選んだ本日の魚。</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right scene--tate" id="ch-sake" data-from="9.5" data-to="11" data-side="right" data-pos="22%" data-graded style="--h: 160; --still: url(assets/stills/sake.webp)">
+      <div class="scene__body">
+        <h2 class="ln tate" aria-label="日本酒"><span aria-hidden="true">日</span><span aria-hidden="true">本</span><span aria-hidden="true">酒</span></h2>
+        <div class="scene__col">
+          <p class="ln eyebrow"><span>SAKE &amp; DRINK</span></p>
+          <p class="ln text">各地の蔵元から厳選した純米酒・純米吟醸を常時10種以上。</p>
+          <p class="ln text text--sub">辛口から甘口まで、季節のおすすめを利き酒セットでも。</p>
+          <p class="ln text text--small">焼酎・ビール・ハイボール・サワー・ワイン・ソフトドリンクも。</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-seats" data-from="11" data-to="12.8" data-side="right" data-pos="35%" style="--h: 110; --still: url(assets/stills/seats.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>ATMOSPHERE</span></p>
+        <h2 class="ln heading">店内</h2>
+        <p class="ln text">カウンター 8席 ／ テーブル 20席</p>
+        <p class="ln text text--sub">全席禁煙・個室カウンター完備</p>
+      </div>
+    </article>
+
+    <article class="scene scene--left scene--tate" id="ch-signature" data-from="12.8" data-to="14.4" data-side="left" data-pos="46%" data-graded style="--h: 180; --still: url(assets/stills/signature.webp)">
+      <div class="scene__body">
+        <h2 class="ln tate" aria-label="名物"><span aria-hidden="true">名</span><span aria-hidden="true">物</span></h2>
+        <div class="scene__col">
+          <p class="ln eyebrow"><span>SIGNATURE</span></p>
+          <ul class="dish-list" aria-label="名物料理">
+            <li class="ln text">極上鮮魚の刺身盛り合わせ</li>
+            <li class="ln text">特製炭火焼き鳥・串焼き五本盛り</li>
+            <li class="ln text">天然鮎の塩焼き</li>
+          </ul>
+          <p class="ln rule" aria-hidden="true"></p>
+          <ul class="dish-list" aria-label="コース（2時間飲み放題付き）">
+            <li class="ln text course"><b>彩りコース</b> 5,500円<small>全8品・2H飲み放題</small></li>
+            <li class="ln text course"><b>名物三種コース</b> 6,800円<small>全10品・2H飲み放題</small></li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="scene scene--center" id="ch-welcome" data-from="14.4" data-to="15" data-side="center" data-pos="46%" style="--h: 140; --still: url(assets/stills/welcome.webp)">
+      <div class="scene__body">
+        <h2 class="ln welcome">席へ、どうぞ。</h2>
+        <p class="ln ln--action"><a class="btn btn--shu btn--lg" href="#reservation">ご予約へ進む</a></p>
+      </div>
+    </article>
+
+  </div>
+
+  <nav class="progress" id="stageHud" aria-label="映像の章">
+    <div class="progress__track" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
+    <div class="progress__row">
+      <a class="progress__ch" href="#ch-noren">暖簾</a>
+      <a class="progress__ch" href="#ch-entrance">炉端</a>
+      <a class="progress__ch" href="#ch-fish">鮮魚</a>
+      <a class="progress__ch" href="#ch-sake">日本酒</a>
+      <a class="progress__ch" href="#ch-seats">店内</a>
+      <a class="progress__ch" href="#ch-signature">名物</a>
+      <a class="progress__ch" href="#ch-welcome">席</a>
+      <span class="progress__now" id="chapterNow" aria-hidden="true">暖簾</span>
+      <a class="progress__skip" href="#reservation">映像をとばして予約へ<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </nav>
+
+  <p class="stage__status" id="stageStatus" role="status" hidden>映像を読み込んでいます</p>
 </section>
 
 <!-- ============ 第2部：和紙トーン ============ -->
 <div class="washi">
+  <div class="washi__fade" aria-hidden="true"></div>
 
 <!-- ============ RESERVATION ============ -->
 <section id="reservation" class="sec">

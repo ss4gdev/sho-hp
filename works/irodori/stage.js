@@ -1,9 +1,10 @@
 /* ============================================================
    映像ステージ
-   スクロール位置 → 動画の再生位置 → 文字の表示 を常に一致させる。
-   - 各行（.ln）は data-in 〜 data-out 秒の間だけ表示（1行ずつフェードイン）
-   - 日本酒・名物の区間はスロー（1秒あたりのスクロール量を増やす）
-   - 最後のフレームで止まり、和紙色の幕が上がって第2部へ
+   背景の動画は画面に敷いたまま、文章はふつうのページと同じように流れる。
+   ページを下へ進めるほど動画も進み、各場面（.scene）が画面中央を
+   通過する間に、その場面の秒数（data-from 〜 data-to）が再生される。
+   - 文章の行（.ln）は、画面に入ってきたものから1行ずつフェードイン
+   - 日本酒・名物は場面を長く取り（--h）、動画をゆっくり進める
    動きを減らす設定・データセーバー・読み込み失敗時は、静止画版に切り替える。
    ============================================================ */
 (function () {
@@ -14,117 +15,133 @@
   var video = document.getElementById('stageVideo');
   if (!stage || !video) return;
 
-  // [開始秒, 終了秒, 1秒あたりのスクロール量(vh)]
-  var SEGMENTS = [
-    [0, 9.5, 45],
-    [9.5, 11, 130],    // 日本酒（スロー）
-    [11, 12.8, 45],
-    [12.8, 14.4, 130], // 名物（スロー）
-    [14.4, 15, 45]
-  ];
-  var HOLD_VH = 70;    // 最終フレームで止めて幕を上げる区間
-  var LERP = 0.22;     // 映像が目標位置へ追いつく速さ（0〜1）
+  var LERP = 0.22;          // 映像が目標の秒数へ追いつく速さ（0〜1）
+  var FADE_IN = 0.88;       // 行の上端が画面のこの位置（上から）より上に来たら表示
+  var FADE_OUT = 0.18;      // 行の下端が画面のこの位置より上に抜けたら隠す（ヘッダーまわりを空ける）
 
-  var scenes = [].slice.call(stage.querySelectorAll('.scene'));
-  var lines = [].slice.call(stage.querySelectorAll('.ln[data-in]')).map(function (el) {
-    var out = el.getAttribute('data-out');
-    return { el: el, t0: parseFloat(el.getAttribute('data-in')), t1: out === null ? Infinity : parseFloat(out), on: false };
+  var scenes = [].slice.call(stage.querySelectorAll('.scene')).map(function (el) {
+    return {
+      el: el,
+      body: el.querySelector('.scene__body'),
+      from: parseFloat(el.getAttribute('data-from')),
+      to: parseFloat(el.getAttribute('data-to')),
+      top: 0, h: 0, hasOn: false
+    };
   });
-  var chapters = [].slice.call(stage.querySelectorAll('.progress__ch'));
+  var lines = [].slice.call(stage.querySelectorAll('.ln')).map(function (el) {
+    return { el: el, on: false, scene: el.closest('.scene') };
+  });
+  var hud = document.getElementById('stageHud');
+  var chapters = [].slice.call(stage.querySelectorAll('.progress__ch')).map(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    for (var i = 0; i < scenes.length; i++) if (scenes[i].el.id === id) return { a: a, idx: i };
+    return { a: a, idx: 0 };
+  });
   var fill = document.getElementById('progressFill');
   var now = document.getElementById('chapterNow');
   var status = document.getElementById('stageStatus');
   var small = window.matchMedia('(max-width: 820px)');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  var END = SEGMENTS[SEGMENTS.length - 1][1];
-  var totalVh = SEGMENTS.reduce(function (s, g) { return s + (g[1] - g[0]) * g[2]; }, 0) + HOLD_VH;
+  var END = scenes[scenes.length - 1].to;
 
   var active = false, ready = false, failed = false;
   var vpH = window.innerHeight, vpW = window.innerWidth;
-  var stageTop = 0, travel = 1;
-  var target = 0, shown = 0, hold = 0;
-  var raf = 0, loadTimer = 0, sceneIndex = -1, chapterIndex = -1, graded = null;
+  var anchors = [], stageBottom = 0;
+  var target = 0, shown = 0;
+  var raf = 0, loadTimer = 0, sceneIndex = -1, chapterIndex = -1, graded = null, hudOn = null;
 
-  /* ---------- スクロール量 ⇄ 秒 ---------- */
-  function timeAt(px) {
-    var v = px / vpH * 100;
-    for (var i = 0; i < SEGMENTS.length; i++) {
-      var g = SEGMENTS[i], len = (g[1] - g[0]) * g[2];
-      if (v <= len) return { t: g[0] + v / g[2], hold: 0 };
-      v -= len;
-    }
-    return { t: END, hold: Math.min(1, v / HOLD_VH) };
-  }
-  function pxAt(t) {
-    var v = 0;
-    for (var i = 0; i < SEGMENTS.length; i++) {
-      var g = SEGMENTS[i];
-      if (t <= g[1]) { v += (Math.max(t, g[0]) - g[0]) * g[2]; break; }
-      v += (g[1] - g[0]) * g[2];
-    }
-    return v / 100 * vpH;
-  }
-
-  function measure() {
-    if (!active) return;
+  /* ---------- 位置の計測：画面中央の位置 ⇄ 動画の秒数 ---------- */
+  function setViewport() {
     vpH = window.innerHeight;
     vpW = window.innerWidth;
+    root.style.setProperty('--vh', (vpH / 100) + 'px');
     root.style.setProperty('--vp-h', vpH + 'px');
-    stage.style.setProperty('--stage-h', (totalVh / 100 * vpH + vpH) + 'px');
-    stageTop = stage.getBoundingClientRect().top + window.scrollY;
-    travel = totalVh / 100 * vpH;
+  }
+  function measure() {
+    if (!active) return;
+    var y = window.scrollY;
+    anchors = [];
+    scenes.forEach(function (s, i) {
+      var r = s.el.getBoundingClientRect();
+      s.top = r.top + y;
+      s.h = r.height;
+      // 最初の場面だけは、ページ最上部（画面中央 = 高さの半分）を0秒にする
+      anchors.push([i === 0 ? s.top + vpH / 2 : s.top, s.from]);
+    });
+    var last = scenes[scenes.length - 1];
+    anchors.push([last.top + last.h, last.to]);
+    stageBottom = stage.getBoundingClientRect().bottom + y;
     schedule();
+  }
+  function timeAtCenter(c) {
+    if (c <= anchors[0][0]) return anchors[0][1];
+    for (var i = 1; i < anchors.length; i++) {
+      var a = anchors[i - 1], b = anchors[i];
+      if (c <= b[0]) return a[1] + (b[1] - a[1]) * (c - a[0]) / Math.max(1, b[0] - a[0]);
+    }
+    return anchors[anchors.length - 1][1];
+  }
+  function centerAtTime(t) {
+    for (var i = 1; i < anchors.length; i++) {
+      var a = anchors[i - 1], b = anchors[i];
+      if (t <= b[1]) return a[0] + (b[0] - a[0]) * (t - a[1]) / Math.max(0.001, b[1] - a[1]);
+    }
+    return anchors[anchors.length - 1][0];
   }
 
   /* ---------- 描画 ---------- */
-  function paintLines(t) {
-    for (var i = 0; i < lines.length; i++) {
-      var l = lines[i], on = t >= l.t0 && t < l.t1;
+  function paintLines() {
+    var inY = small.matches ? vpH - 150 : vpH * FADE_IN;
+    var outY = vpH * FADE_OUT;
+    for (var i = 0; i < scenes.length; i++) scenes[i].hasOn = false;
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j], r = l.el.getBoundingClientRect();
+      var on = r.top < inY && r.bottom > outY;
       if (on !== l.on) { l.on = on; l.el.classList.toggle('is-on', on); }
+      if (on) for (var k = 0; k < scenes.length; k++) if (scenes[k].el === l.scene) scenes[k].hasOn = true;
+    }
+    for (var m = 0; m < scenes.length; m++) {
+      var s = scenes[m];
+      if (s.body && s.body.classList.contains('has-on') !== s.hasOn) s.body.classList.toggle('has-on', s.hasOn);
     }
   }
-  function paintScene(t) {
+  function paintScene(c) {
     var idx = 0;
-    for (var i = 0; i < scenes.length; i++) {
-      if (t >= parseFloat(scenes[i].getAttribute('data-from'))) idx = i;
-    }
+    for (var i = 0; i < scenes.length; i++) if (c >= scenes[i].top) idx = i;
     if (idx !== sceneIndex) {
       sceneIndex = idx;
-      var s = scenes[idx];
+      var s = scenes[idx].el;
       stage.setAttribute('data-side', s.getAttribute('data-side'));
       stage.style.setProperty('--pos', small.matches ? (s.getAttribute('data-pos') || '50%') : '50%');
       var g = s.hasAttribute('data-graded');
       if (g !== graded) { graded = g; stage.classList.toggle('is-graded', g); }
     }
     var ch = 0;
-    for (var j = 0; j < chapters.length; j++) {
-      if (t >= parseFloat(chapters[j].getAttribute('data-time')) - 0.4) ch = j;
-    }
+    for (var j = 0; j < chapters.length; j++) if (idx >= chapters[j].idx) ch = j;
     if (ch !== chapterIndex) {
-      if (chapters[chapterIndex]) { chapters[chapterIndex].classList.remove('is-active'); chapters[chapterIndex].removeAttribute('aria-current'); }
+      if (chapters[chapterIndex]) { chapters[chapterIndex].a.classList.remove('is-active'); chapters[chapterIndex].a.removeAttribute('aria-current'); }
       chapterIndex = ch;
-      chapters[ch].classList.add('is-active');
-      chapters[ch].setAttribute('aria-current', 'step');
-      if (now) now.textContent = chapters[ch].textContent;
+      chapters[ch].a.classList.add('is-active');
+      chapters[ch].a.setAttribute('aria-current', 'step');
+      if (now) now.textContent = chapters[ch].a.textContent;
     }
   }
   function frame() {
     raf = 0;
     if (!active) return;
-    var px = Math.min(Math.max(window.scrollY - stageTop, 0), travel);
-    var pos = timeAt(px);
-    target = pos.t;
-    hold = pos.hold;
+    var y = window.scrollY;
+    var c = y + vpH / 2;
+    target = timeAtCenter(c);
 
-    // 映像と文字は同じ「表示中の秒数」で動かす
+    // 映像はなめらかに目標の秒数へ追いつかせる
     var diff = target - shown;
     shown = Math.abs(diff) < 0.004 ? target : shown + diff * LERP;
 
-    paintLines(shown);
-    paintScene(shown);
-    stage.style.setProperty('--veil', hold.toFixed(3));
+    paintLines();
+    paintScene(c);
     if (fill) fill.style.transform = 'scaleX(' + Math.min(1, shown / END).toFixed(4) + ')';
+    var on = stageBottom - y > vpH * 1.15; // 和紙がせり上がってきたら章ナビを消す
+    if (on !== hudOn) { hudOn = on; hud.classList.toggle('is-on', on); }
     seek(shown);
 
     if (shown !== target) schedule();
@@ -147,7 +164,7 @@
     var ext = mp4 ? 'mp4' : (video.canPlayType('video/webm; codecs="vp9"') ? 'webm' : 'mp4');
     var src = 'assets/video/irodori-' + (small.matches ? '480' : '720') + '.' + ext;
     status.hidden = true;
-    loadTimer = setTimeout(function () { if (!ready) status.hidden = false; }, 1500);
+    loadTimer = setTimeout(function () { if (!ready && window.scrollY < stageBottom) status.hidden = false; }, 1500);
     var hardTimeout = setTimeout(function () { if (!ready) toStatic(); }, 30000);
     video.addEventListener('loadeddata', function () {
       if (ready) return;
@@ -156,9 +173,9 @@
       status.hidden = true;
       // iOS Safariは一度再生しないとシーク後のフレームを描かないため、再生→即停止しておく
       var p = video.play();
-      if (p && p.then) p.then(function () { video.pause(); stage.classList.add('is-ready'); schedule(); })
-        .catch(function () { stage.classList.add('is-ready'); schedule(); });
-      else { video.pause(); stage.classList.add('is-ready'); schedule(); }
+      var done = function () { video.pause(); stage.classList.add('is-ready'); schedule(); };
+      if (p && p.then) p.then(done).catch(function () { stage.classList.add('is-ready'); schedule(); });
+      else done();
     });
     video.addEventListener('seeked', schedule);
     video.addEventListener('error', function () { clearTimeout(hardTimeout); toStatic(); });
@@ -190,49 +207,47 @@
     status.hidden = true;
     try { video.pause(); } catch (e) {}
     root.classList.remove('is-scrub');
-    stage.style.removeProperty('--stage-h');
     lines.forEach(function (l) { l.el.classList.remove('is-on'); });
   }
 
   function start() {
     active = true;
+    setViewport();
     load();
     measure();
     frame();
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', function () {
-      // アドレスバーの伸縮（高さだけの小さな変化）ではスクロール量を組み直さない
+      // アドレスバーの伸縮（高さだけの小さな変化）では場面の長さを組み直さない
       if (window.innerWidth === vpW && Math.abs(window.innerHeight - vpH) < 120) return;
+      setViewport();
       measure();
     }, { passive: true });
     window.addEventListener('load', measure);
     window.addEventListener('pageshow', measure);
-    if ('ResizeObserver' in window) new ResizeObserver(function () {
-      if (active) stageTop = stage.getBoundingClientRect().top + window.scrollY;
-    }).observe(document.body);
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) schedule(); });
     var onReduce = function () { if (reduce.matches) toStatic(); };
     if (reduce.addEventListener) reduce.addEventListener('change', onReduce);
     else if (reduce.addListener) reduce.addListener(onReduce);
   }
 
-  /* ---------- 外部から使う：章への移動 ---------- */
+  /* ---------- 外部から使う：場面への移動（その場面の文章が画面中央に来る位置へ） ---------- */
   function goTo(id, smooth) {
-    var el = document.getElementById(id);
-    if (!el) return false;
     if (!active) return false;
-    var t;
-    var ch = stage.querySelector('.progress__ch[href="#' + id + '"]');
-    if (ch) t = parseFloat(ch.getAttribute('data-time'));
-    else if (el.classList.contains('scene')) t = parseFloat(el.getAttribute('data-from')) + 0.3;
-    else return false;
-    window.scrollTo({ top: Math.round(stageTop + pxAt(t)), behavior: smooth === false ? 'auto' : 'smooth' });
-    return true;
+    for (var i = 0; i < scenes.length; i++) {
+      var s = scenes[i];
+      if (s.el.id !== id) continue;
+      var top = i === 0 ? 0 : s.top + s.h / 2 - vpH / 2;
+      window.scrollTo({ top: Math.round(top), behavior: smooth === false ? 'auto' : 'smooth' });
+      return true;
+    }
+    return false;
   }
   window.IrodoriStage = {
     isActive: function () { return active; },
     goTo: goTo,
-    scrollYFor: function (t) { return Math.round(stageTop + pxAt(t)); }
+    scrollYFor: function (t) { return Math.max(0, Math.round(centerAtTime(t) - vpH / 2)); }
   };
 
   if (root.classList.contains('is-scrub')) start();
