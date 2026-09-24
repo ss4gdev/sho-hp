@@ -282,6 +282,7 @@ input, select, textarea { font-size: 16px; } /* iOSのズーム防止 */
   position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 3;
   margin: 0; padding: 8px 18px; border-radius: 999px;
   background: rgba(var(--sumi), .6); color: var(--txt-sub); font-size: 12px; letter-spacing: .1em;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 .stage__status[hidden] { display: none; }
 

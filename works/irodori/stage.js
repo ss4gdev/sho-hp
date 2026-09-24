@@ -158,14 +158,52 @@
   }
 
   /* ---------- 読み込み ---------- */
-  function load() {
-    // H.264（MP4）を優先し、再生できないブラウザだけVP9（WebM）を使う
+  // 回線が遅いときだけ軽い版を使う（通常はPC・スマホとも720pの高画質版）
+  function pickSource() {
     var mp4 = video.canPlayType('video/mp4; codecs="avc1.640028"');
     var ext = mp4 ? 'mp4' : (video.canPlayType('video/webm; codecs="vp9"') ? 'webm' : 'mp4');
-    var src = 'assets/video/irodori-' + (small.matches ? '480' : '720') + '.' + ext;
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var slow = !!(c && (/(^|-)(2g|3g)$/.test(c.effectiveType || '') || (c.downlink && c.downlink < 1.5)));
+    var name = slow ? (small.matches ? '480' : '720') : '720-hq';
+    return 'assets/video/irodori-' + name + '.' + ext;
+  }
+  // すぐ読み終わるときは出さない（load() で0.6秒後に解禁）。表示は5%刻みで更新する
+  var progressArmed = false, lastPct = -1;
+  function showProgress(ratio) {
+    if (!progressArmed || ready || window.scrollY >= stageBottom) return;
+    var pct = ratio == null ? -1 : Math.floor(ratio * 20) * 5;
+    if (pct === lastPct && !status.hidden) return;
+    lastPct = pct;
+    status.textContent = pct < 0 ? '映像を読み込んでいます' : '映像を読み込んでいます ' + pct + '%';
+    status.hidden = false;
+  }
+  // 読み込みながら進み具合を表示し、最後に1つのBlobにまとめる
+  function fetchWithProgress(src) {
+    return fetch(src).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      var total = parseInt(r.headers.get('Content-Length'), 10);
+      var type = r.headers.get('Content-Type') || (src.slice(-4) === 'webm' ? 'video/webm' : 'video/mp4');
+      if (!r.body || !r.body.getReader || !total) { showProgress(null); return r.blob(); }
+      var reader = r.body.getReader(), chunks = [], got = 0;
+      function pump() {
+        return reader.read().then(function (res) {
+          if (res.done) return new Blob(chunks, { type: type });
+          chunks.push(res.value);
+          got += res.value.length;
+          showProgress(Math.min(1, got / total));
+          return pump();
+        });
+      }
+      return pump();
+    });
+  }
+
+  /* ---------- 読み込み ---------- */
+  function load() {
+    var src = pickSource();
     status.hidden = true;
-    loadTimer = setTimeout(function () { if (!ready && window.scrollY < stageBottom) status.hidden = false; }, 1500);
-    var hardTimeout = setTimeout(function () { if (!ready) toStatic(); }, 30000);
+    loadTimer = setTimeout(function () { progressArmed = true; showProgress(null); }, 600);
+    var hardTimeout = setTimeout(function () { if (!ready) toStatic(); }, 45000);
     video.addEventListener('loadeddata', function () {
       if (ready) return;
       ready = true;
@@ -182,10 +220,7 @@
 
     // Blobとして丸ごと読み込むと、シークが通信待ちにならず滑らかになる
     if (window.fetch && window.URL && URL.createObjectURL) {
-      fetch(src).then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        return r.blob();
-      }).then(function (blob) {
+      fetchWithProgress(src).then(function (blob) {
         if (failed) return;
         video.src = URL.createObjectURL(blob);
         video.load();
