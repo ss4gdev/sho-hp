@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  SHU（シュー）｜映像版 ─ 難波の韓国トレンドヘアサロン
+  ------------------------------------------------------------
+  現行サイト（works/shu）のブランド・コピー・店舗情報をそのまま使い、
+  「映像 → 余白 → 大きな文字 → 厳選した写真 → 最低限の情報」の順に組み直したページ。
+
+  構成: HEADER → HERO VIDEO → CONCEPT → TRANSFORMATION → STYLE GALLERY
+        → MENU → STYLIST → SALON → CTA → FOOTER
+
+  ・ヒーロー動画の差し替え … このファイルの「HERO VIDEO」と README.md の「1. ヒーロー動画」
+  ・写真の差し替え           … README.md の「2. 写真」（_tools/build_images.py で一括書き出し）
+  ============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>SHU（シュー）| 難波の韓国トレンドヘアサロン</title>
+<meta name="description" content="大阪・難波駅徒歩3分。透明感カラー、タッセルカット、ヨシンモリ、エギョモリなど本場仕込みの韓国トレンドヘアが叶うヘアサロン SHU。">
+<meta name="theme-color" content="#1A1A1A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231A1A1A'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' text-anchor='middle' fill='%23F9F9F8'%3ES%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shippori+Mincho:wght@500&family=Noto+Sans+JP:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js');</script>
+<script src="app.js" defer></script>
+</head>
+
+<body>
+<a class="skip-link" href="#concept">本文へスキップ</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    <a class="logo" href="#top" aria-label="SHU トップへ">SHU</a>
+
+    <nav class="gnav" aria-label="メインメニュー">
+      <ul class="gnav__list">
+        <li><a href="#style">Style</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#stylist">Stylist</a></li>
+        <li><a href="#salon">Salon</a></li>
+      </ul>
+      <a class="gnav__book" href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener">Book</a>
+    </nav>
+
+    <button class="menu-btn" id="menu-btn" type="button" aria-controls="drawer" aria-expanded="false">
+      <span class="menu-btn__lines" aria-hidden="true"></span>
+      <span class="menu-btn__label visually-hidden">メニューを開く</span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ MOBILE DRAWER ============ -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="メニュー" inert>
+  <nav class="drawer__nav" aria-label="モバイルメニュー">
+    <a href="#concept"><span>01</span>Concept</a>
+    <a href="#transformation"><span>02</span>Transformation</a>
+    <a href="#style"><span>03</span>Style</a>
+    <a href="#menu"><span>04</span>Menu</a>
+    <a href="#stylist"><span>05</span>Stylist</a>
+    <a href="#salon"><span>06</span>Salon</a>
+  </nav>
+  <div class="drawer__foot">
+    <a class="btn btn--ink" href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener">Web予約（Hot Pepper Beauty）</a>
+    <a class="btn btn--line" href="https://line.me/" target="_blank" rel="noopener">LINEで予約</a>
+    <p class="drawer__info">なんば駅 徒歩3分 ／ 10:00 – 20:00 ／ 火曜定休</p>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============ HERO VIDEO ============
+  いまは動画ファイルが無いため data-video="off"。<picture> のポスター画像を表示しています。
+  動画を用意したら:
+    1. assets/video/ に hero-pc.mp4 / hero-pc.webm（横 16:9）と hero-sp.mp4 / hero-sp.webm（縦 9:16）を置く
+    2. 下の <section> の data-video="off" を "on" にする
+  ・縦長の画面（スマホ・タブレット縦）では data-media に合う hero-sp、それ以外は hero-pc を読み込みます。
+  ・hero-sp を用意しない場合は、data-media 付きの <source> 2行を削除すると全画面で hero-pc を使います。
+  ・動画が読み込めない / 再生できない / 省データ設定 / 視差効果を減らす設定のときは、ポスター画像のまま表示されます。
+-->
+<section class="hero" id="top" data-hero data-video="off" aria-label="SHU イメージ映像">
+  <div class="hero__media">
+    <picture class="hero__poster">
+      <source media="(max-aspect-ratio: 5/6)" type="image/avif" srcset="assets/hero/poster-sp-750.avif">
+      <source media="(max-aspect-ratio: 5/6)" type="image/webp" srcset="assets/hero/poster-sp-750.webp">
+      <source media="(max-aspect-ratio: 5/6)" srcset="assets/hero/poster-sp-750.jpg">
+      <source type="image/avif" srcset="assets/hero/poster-pc-1280.avif 1280w, assets/hero/poster-pc-1920.avif 1920w" sizes="100vw">
+      <source type="image/webp" srcset="assets/hero/poster-pc-1280.webp 1280w, assets/hero/poster-pc-1920.webp 1920w" sizes="100vw">
+      <img src="assets/hero/poster-pc-1920.jpg" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
+    </picture>
+    <video class="hero__video" autoplay muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1">
+      <source data-src="assets/video/hero-sp.webm" type="video/webm" data-media="(max-aspect-ratio: 5/6)">
+      <source data-src="assets/video/hero-sp.mp4" type="video/mp4" data-media="(max-aspect-ratio: 5/6)">
+      <source data-src="assets/video/hero-pc.webm" type="video/webm">
+      <source data-src="assets/video/hero-pc.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero__shade" aria-hidden="true"></div>
+
+  <div class="hero__inner container container--wide">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Namba / Korean Trend Hair Salon</p>
+      <h1 class="hero__title">鏡を見るたび、<br>もっと自分が好きになる。</h1>
+      <p class="hero__en">Fall in Love With Your Reflection</p>
+      <a class="hero__link link-arrow" href="#reserve">Reservation<span class="link-arrow__icon" aria-hidden="true"></span></a>
+    </div>
+  </div>
+
+  <div class="hero__foot container container--wide">
+    <a class="hero__scroll" href="#concept"><span class="hero__scroll-line" aria-hidden="true"></span>Scroll</a>
+    <button class="hero__toggle" type="button" aria-pressed="false" hidden>
+      <span class="hero__toggle-icon" aria-hidden="true"></span><span class="hero__toggle-label">Pause</span>
+    </button>
+  </div>
+</section>
+
+<!-- ============ CONCEPT ============ -->
+<section class="concept section section--end" id="concept">
+  <div class="container concept__grid">
+    <div class="concept__text">
+      <p class="eyebrow reveal"><span class="eyebrow__no">01</span>Concept</p>
+      <h2 class="concept__title reveal">似合わせで纏う、<br>本場・韓国のトレンド。</h2>
+      <p class="concept__lead reveal">韓国現地のトレンドを、一人ひとりの骨格と髪質に合わせて。<br class="u-pc">形の模倣ではなく、あなたの魅力を引き出す一着として仕立てます。</p>
+      <p class="concept__en reveal">Korean trend, tailored to you.</p>
+    </div>
+    <figure class="concept__figure reveal">
+      <div class="frame">
+        <picture>
+          <source type="image/avif" srcset="assets/img/concept/concept-640.avif 640w, assets/img/concept/concept-1080.avif 1080w" sizes="(min-width: 768px) 32vw, 78vw">
+          <source type="image/webp" srcset="assets/img/concept/concept-640.webp 640w, assets/img/concept/concept-1080.webp 1080w" sizes="(min-width: 768px) 32vw, 78vw">
+          <img src="assets/img/concept/concept-1080.jpg" alt="窓辺の光の中、ゆるく巻いたロングヘアのモデル" width="1080" height="1350" loading="lazy" decoding="async">
+        </picture>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ TRANSFORMATION ============
+  Before / After の写真は assets/img/transformation/before-* ・ after-* を差し替え（README.md 参照）
+-->
+<section class="transformation section section--band" id="transformation">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow reveal"><span class="eyebrow__no">02</span>Before &amp; After</p>
+      <h2 class="sec-title reveal">Transformation</h2>
+      <p class="sec-sub reveal">ロングから、韓国ショートへ。</p>
+    </header>
+
+    <div class="tf">
+      <figure class="tf__item tf__item--before reveal">
+        <div class="frame">
+          <picture>
+            <source type="image/avif" srcset="assets/img/transformation/before-480.avif 480w, assets/img/transformation/before-960.avif 960w" sizes="(min-width: 768px) 36vw, 66vw">
+            <source type="image/webp" srcset="assets/img/transformation/before-480.webp 480w, assets/img/transformation/before-960.webp 960w" sizes="(min-width: 768px) 36vw, 66vw">
+            <img src="assets/img/transformation/before-960.jpg" alt="ビフォー：胸下まであるロングヘア" width="960" height="1200" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="tf__cap"><span class="tf__label">Before</span><span class="tf__style">Long Layer</span></figcaption>
+      </figure>
+
+      <div class="tf__arrow reveal" aria-hidden="true">
+        <span class="tf__arrow-text">Cut + Color</span>
+        <span class="tf__arrow-line"></span>
+      </div>
+
+      <figure class="tf__item tf__item--after reveal">
+        <div class="frame">
+          <picture>
+            <source type="image/avif" srcset="assets/img/transformation/after-640.avif 640w, assets/img/transformation/after-1080.avif 1080w" sizes="(min-width: 768px) 44vw, 84vw">
+            <source type="image/webp" srcset="assets/img/transformation/after-640.webp 640w, assets/img/transformation/after-1080.webp 1080w" sizes="(min-width: 768px) 44vw, 84vw">
+            <img src="assets/img/transformation/after-1080.jpg" alt="アフター：シースルーバングの韓国ショートボブ" width="1080" height="1350" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="tf__cap"><span class="tf__label">After</span><span class="tf__style">Korean Short Bob</span></figcaption>
+      </figure>
+    </div>
+
+    <p class="tf__note reveal">顔まわりに軽さを残して、首すじをすっきり見せるショートボブへ。<span>※ 掲載写真はイメージです。</span></p>
+  </div>
+</section>
+
+<!-- ============ STYLE GALLERY ============
+  PC   : [大 01 | 小 02・03（対角）]  →  余白  →  [小 05・06（対角）| 大 04]
+  Mobile: 大 01 → 小 02/03 → 大 04 → 小 05/06
+  写真は assets/img/gallery/01〜06 を差し替え（README.md 参照）
+-->
+<section class="gallery section" id="style">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow reveal"><span class="eyebrow__no">03</span>Hair Catalog</p>
+      <h2 class="sec-title reveal">Style Gallery</h2>
+      <p class="sec-sub sec-sub--en reveal">Hair styles made for you.</p>
+    </header>
+
+    <div class="gl">
+      <div class="gl__block gl__block--a">
+        <figure class="gl__item gl__item--lg reveal">
+          <div class="frame">
+            <picture>
+              <source type="image/avif" srcset="assets/img/gallery/01-640.avif 640w, assets/img/gallery/01-1200.avif 1200w" sizes="(min-width: 768px) 54vw, 90vw">
+              <source type="image/webp" srcset="assets/img/gallery/01-640.webp 640w, assets/img/gallery/01-1200.webp 1200w" sizes="(min-width: 768px) 54vw, 90vw">
+              <img src="assets/img/gallery/01-1200.jpg" alt="韓国ショートのスタイル" width="1200" height="1600" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption class="gl__cap"><span class="gl__name">Korean Short</span><span class="gl__tag">Short / Natural</span></figcaption>
+        </figure>
+        <div class="gl__pair">
+          <figure class="gl__item gl__item--sm reveal">
+            <div class="frame">
+              <picture>
+                <source type="image/avif" srcset="assets/img/gallery/02-480.avif 480w, assets/img/gallery/02-800.avif 800w" sizes="(min-width: 768px) 24vw, 45vw">
+                <source type="image/webp" srcset="assets/img/gallery/02-480.webp 480w, assets/img/gallery/02-800.webp 800w" sizes="(min-width: 768px) 24vw, 45vw">
+                <img src="assets/img/gallery/02-800.jpg" alt="丸みのあるボブのスタイル" width="800" height="1000" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <figcaption class="gl__cap"><span class="gl__name">Round Bob</span><span class="gl__tag">Bob / Round</span></figcaption>
+          </figure>
+          <figure class="gl__item gl__item--sm reveal" data-delay="1">
+            <div class="frame">
+              <picture>
+                <source type="image/avif" srcset="assets/img/gallery/03-480.avif 480w, assets/img/gallery/03-800.avif 800w" sizes="(min-width: 768px) 18vw, 45vw">
+                <source type="image/webp" srcset="assets/img/gallery/03-480.webp 480w, assets/img/gallery/03-800.webp 800w" sizes="(min-width: 768px) 18vw, 45vw">
+                <img src="assets/img/gallery/03-800.jpg" alt="顔まわりにレイヤーを入れたロングのスタイル" width="800" height="1000" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <figcaption class="gl__cap"><span class="gl__name">Face Layer</span><span class="gl__tag">Long / Face Framing</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="gl__block gl__block--b">
+        <figure class="gl__item gl__item--lg reveal">
+          <div class="frame">
+            <picture>
+              <source type="image/avif" srcset="assets/img/gallery/04-640.avif 640w, assets/img/gallery/04-1200.avif 1200w" sizes="(min-width: 768px) 54vw, 90vw">
+              <source type="image/webp" srcset="assets/img/gallery/04-640.webp 640w, assets/img/gallery/04-1200.webp 1200w" sizes="(min-width: 768px) 54vw, 90vw">
+              <img src="assets/img/gallery/04-1200.jpg" alt="ヨシンモリのロングウェーブスタイル" width="1200" height="1600" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption class="gl__cap"><span class="gl__name">Yoshin-mori</span><span class="gl__tag">Long / Wave</span></figcaption>
+        </figure>
+        <div class="gl__pair">
+          <figure class="gl__item gl__item--sm reveal">
+            <div class="frame">
+              <picture>
+                <source type="image/avif" srcset="assets/img/gallery/05-480.avif 480w, assets/img/gallery/05-800.avif 800w" sizes="(min-width: 768px) 24vw, 45vw">
+                <source type="image/webp" srcset="assets/img/gallery/05-480.webp 480w, assets/img/gallery/05-800.webp 800w" sizes="(min-width: 768px) 24vw, 45vw">
+                <img src="assets/img/gallery/05-800.jpg" alt="レイヤーを重ねたショートのスタイル" width="800" height="1000" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <figcaption class="gl__cap"><span class="gl__name">Layered Short</span><span class="gl__tag">Short / Layer</span></figcaption>
+          </figure>
+          <figure class="gl__item gl__item--sm reveal" data-delay="1">
+            <div class="frame">
+              <picture>
+                <source type="image/avif" srcset="assets/img/gallery/06-480.avif 480w, assets/img/gallery/06-800.avif 800w" sizes="(min-width: 768px) 18vw, 45vw">
+                <source type="image/webp" srcset="assets/img/gallery/06-480.webp 480w, assets/img/gallery/06-800.webp 800w" sizes="(min-width: 768px) 18vw, 45vw">
+                <img src="assets/img/gallery/06-800.jpg" alt="ストレートのロングレイヤースタイル" width="800" height="1000" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <figcaption class="gl__cap"><span class="gl__name">Long Layer</span><span class="gl__tag">Long / Straight</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <p class="gl__more reveal"><a class="link-arrow" href="https://www.instagram.com/" target="_blank" rel="noopener">More Styles on Instagram<span class="link-arrow__icon" aria-hidden="true"></span></a></p>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="menu section" id="menu">
+  <div class="container menu__grid">
+    <header class="sec-head menu__head">
+      <p class="eyebrow reveal"><span class="eyebrow__no">04</span>Price List</p>
+      <h2 class="sec-title reveal">Menu</h2>
+      <p class="sec-sub reveal">表示価格はすべて税込です。</p>
+    </header>
+
+    <div class="menu__body">
+      <ul class="price reveal">
+        <li class="price__row"><span class="price__name">Cut</span><span class="price__desc">似合わせデザインカット</span><span class="price__yen">¥7,700</span></li>
+        <li class="price__row"><span class="price__name">Color</span><span class="price__desc">透明感シアーカラー</span><span class="price__yen">¥12,100<small>〜</small></span></li>
+        <li class="price__row"><span class="price__name">Cut + Color</span><span class="price__desc">似合わせカット ＋ シアーカラー</span><span class="price__yen">¥19,800<small>〜</small></span></li>
+        <li class="price__row"><span class="price__name">Perm</span><span class="price__desc">ヨシンモリパーマ</span><span class="price__yen">¥16,500<small>〜</small></span></li>
+        <li class="price__row"><span class="price__name">Treatment</span><span class="price__desc">髪質改善トリートメント</span><span class="price__yen">¥8,800<small>〜</small></span></li>
+      </ul>
+
+      <details class="menu-more reveal">
+        <summary><span class="menu-more__open">View Full Menu</span><span class="menu-more__close">Close</span><span class="menu-more__icon" aria-hidden="true"></span></summary>
+        <div class="menu-more__body">
+          <div class="menu-group">
+            <h3>Cut</h3>
+            <ul>
+              <li><span>似合わせデザインカット</span><span>¥7,700</span></li>
+              <li><span>カット + シャンプーブロー</span><span>¥8,800</span></li>
+              <li><span>前髪カット</span><span>¥1,100</span></li>
+            </ul>
+          </div>
+          <div class="menu-group">
+            <h3>Color</h3>
+            <ul>
+              <li><span>透明感シアーカラー</span><span>¥12,100〜</span></li>
+              <li><span>ハイライト / グラデーション</span><span>¥16,500〜</span></li>
+              <li><span>リタッチカラー</span><span>¥9,900〜</span></li>
+            </ul>
+          </div>
+          <div class="menu-group">
+            <h3>Perm</h3>
+            <ul>
+              <li><span>韓国風ダウンパーマ</span><span>¥14,300〜</span></li>
+              <li><span>ヨシンモリパーマ</span><span>¥16,500〜</span></li>
+              <li><span>縮毛矯正</span><span>¥19,800〜</span></li>
+            </ul>
+          </div>
+          <div class="menu-group">
+            <h3>Treatment</h3>
+            <ul>
+              <li><span>髪質改善トリートメント</span><span>¥8,800〜</span></li>
+              <li><span>水トリートメント</span><span>¥5,500</span></li>
+              <li><span>ヘッドスパ</span><span>¥4,400〜</span></li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <p class="menu__note reveal">※ 髪の長さ・状態によって、別途料金が加算される場合がございます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STYLIST ============ -->
+<section class="stylist section" id="stylist">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow reveal"><span class="eyebrow__no">05</span>Hair Designer</p>
+      <h2 class="sec-title reveal">Stylist</h2>
+      <p class="sec-sub sec-sub--en reveal">The hands behind your new look.</p>
+    </header>
+
+    <div class="st">
+      <figure class="st__portrait reveal">
+        <div class="frame">
+          <picture>
+            <source type="image/avif" srcset="assets/img/stylist/karin-640.avif 640w, assets/img/stylist/karin-1080.avif 1080w" sizes="(min-width: 768px) 46vw, 88vw">
+            <source type="image/webp" srcset="assets/img/stylist/karin-640.webp 640w, assets/img/stylist/karin-1080.webp 1080w" sizes="(min-width: 768px) 46vw, 88vw">
+            <img src="assets/img/stylist/karin-1080.jpg" alt="上本花梨のポートレート" width="1080" height="1350" loading="lazy" decoding="async">
+          </picture>
+        </div>
+      </figure>
+
+      <div class="st__body">
+        <p class="st__role reveal">Executive Stylist</p>
+        <h3 class="st__name reveal">上本 花梨<span class="st__name-en">Karin Uemoto</span></h3>
+        <p class="st__profile reveal">骨格と髪質を読み解く「似合わせカット」と、透明感のあるシアーカラーが得意。ロングから韓国ショートへのイメージチェンジも、毎日の再現性まで考えてご提案します。</p>
+        <p class="reveal"><a class="link-arrow" href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram<span class="link-arrow__icon" aria-hidden="true"></span></a></p>
+
+        <div class="st__team reveal">
+          <p class="st__team-label">Team</p>
+          <ul>
+            <li>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+                <picture>
+                  <source type="image/avif" srcset="assets/img/stylist/rise-320.avif">
+                  <source type="image/webp" srcset="assets/img/stylist/rise-320.webp">
+                  <img src="assets/img/stylist/rise-320.jpg" alt="" width="320" height="400" loading="lazy" decoding="async">
+                </picture>
+                <span class="st__member"><span class="st__member-name">佐藤 凛星</span><span class="st__member-role">Stylist</span></span>
+                <span class="st__member-link">Instagram</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+                <picture>
+                  <source type="image/avif" srcset="assets/img/stylist/ryoko-320.avif">
+                  <source type="image/webp" srcset="assets/img/stylist/ryoko-320.webp">
+                  <img src="assets/img/stylist/ryoko-320.jpg" alt="" width="320" height="400" loading="lazy" decoding="async">
+                </picture>
+                <span class="st__member"><span class="st__member-name">多賀 涼子</span><span class="st__member-role">Junior Stylist</span></span>
+                <span class="st__member-link">Instagram</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SALON ============ -->
+<section class="salon section section--end" id="salon">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow reveal"><span class="eyebrow__no">06</span>Access</p>
+      <h2 class="sec-title reveal">Salon</h2>
+      <p class="sec-sub sec-sub--en reveal">Namba, Osaka</p>
+    </header>
+
+    <div class="salon__layout">
+      <div class="salon__photos">
+        <figure class="salon__main reveal">
+          <div class="frame">
+            <picture>
+              <source type="image/avif" srcset="assets/img/salon/main-640.avif 640w, assets/img/salon/main-1200.avif 1200w" sizes="(min-width: 768px) 56vw, 100vw">
+              <source type="image/webp" srcset="assets/img/salon/main-640.webp 640w, assets/img/salon/main-1200.webp 1200w" sizes="(min-width: 768px) 56vw, 100vw">
+              <img src="assets/img/salon/main-1200.jpg" alt="SHUの店内。窓際に鏡とセット面が並ぶ" width="1200" height="900" loading="lazy" decoding="async">
+            </picture>
+          </div>
+        </figure>
+        <figure class="salon__detail reveal" data-delay="1">
+          <div class="frame">
+            <picture>
+              <source type="image/avif" srcset="assets/img/salon/detail-480.avif 480w, assets/img/salon/detail-800.avif 800w" sizes="(min-width: 768px) 20vw, 52vw">
+              <source type="image/webp" srcset="assets/img/salon/detail-480.webp 480w, assets/img/salon/detail-800.webp 800w" sizes="(min-width: 768px) 20vw, 52vw">
+              <img src="assets/img/salon/detail-800.jpg" alt="セット面のチェア" width="800" height="1000" loading="lazy" decoding="async">
+            </picture>
+          </div>
+        </figure>
+      </div>
+
+      <div class="salon__info reveal">
+        <p class="salon__name">SHU<span>シュー</span></p>
+        <dl class="salon__dl">
+          <div><dt>Address</dt><dd>大阪府大阪市中央区難波3丁目<br>◯◯ビル 3F</dd></div>
+          <div><dt>Hours</dt><dd>10:00 – 20:00（最終受付 19:00）<br>火曜定休</dd></div>
+          <div><dt>Access</dt><dd>Osaka Metro 御堂筋線「なんば駅」<br>より徒歩3分</dd></div>
+          <div><dt>Tel</dt><dd><a href="tel:0600000000">06-0000-0000</a></dd></div>
+        </dl>
+        <p><a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E9%9B%A3%E6%B3%A2" target="_blank" rel="noopener">Google Map<span class="link-arrow__icon" aria-hidden="true"></span></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="reserve" aria-labelledby="cta-title">
+  <div class="container cta__inner">
+    <p class="eyebrow eyebrow--light reveal">Reservation</p>
+    <h2 class="cta__title reveal" id="cta-title">Ready for<br class="u-sp"> a new you?</h2>
+    <p class="cta__jp reveal">新しい自分に出会う。</p>
+    <a class="cta__btn reveal" href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener">
+      <span class="cta__btn-main">Reservation</span>
+      <span class="cta__btn-sub">Web予約（Hot Pepper Beauty）</span>
+    </a>
+    <p class="cta__sub reveal">
+      <a href="https://line.me/" target="_blank" rel="noopener">LINEで予約</a>
+      <a href="tel:0600000000">お電話 06-0000-0000</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#top">SHU</a>
+      <p class="footer__tagline">難波で叶える、本場仕込みの韓国トレンドヘア。</p>
+    </div>
+    <nav class="footer__nav" aria-label="フッターメニュー">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="#menu">Menu</a>
+      <a href="#salon">Access</a>
+      <a href="#reserve">Reservation</a>
+    </nav>
+    <p class="footer__copy">© 2026 SHU</p>
+  </div>
+</footer>
+
+<!-- ============ MOBILE BOOK BAR（ヒーローを過ぎると表示／CTA・フッターでは隠す） ============ -->
+<div class="book-bar" id="book-bar">
+  <a class="book-bar__line" href="https://line.me/" target="_blank" rel="noopener">LINE予約</a>
+  <a class="book-bar__web" href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener">Web予約</a>
+</div>
+
+
+<!-- デモサイト表示（SHO 店舗向けHP制作） -->
+<style>
+#sho-demo-badge{position:fixed;left:14px;top:88px;z-index:40;display:inline-flex;align-items:center;gap:8px;padding:9px 14px 9px 11px;border-radius:999px;background:rgba(43,58,74,.92);color:#fff;font:600 12px/1.3 "Noto Sans JP","Hiragino Sans",sans-serif;letter-spacing:.04em;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:.96}
+#sho-demo-badge:hover{opacity:1}
+#sho-demo-badge .dot{width:8px;height:8px;border-radius:50%;background:#c87d55;flex:none}
+#sho-demo-badge small{font-weight:400;opacity:.8}
+@media (max-width:640px){#sho-demo-badge{top:72px;left:10px;padding:7px 11px 7px 9px;font-size:11px}#sho-demo-badge small{display:none}}
+</style>
+<a id="sho-demo-badge" href="../../" target="_blank" rel="noopener" aria-label="これはデモサイトです。SHO 店舗向けHP制作のサイトへ"><span class="dot"></span>これはデモサイトです<small>｜ SHO 店舗向けHP制作</small></a>
+</body>
+</html>
