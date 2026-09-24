@@ -1,0 +1,567 @@
+<!--
+  ============================================================
+  炭火炉端と旬鮮料理 いろどり ｜ 公式サイト
+  ------------------------------------------------------------
+  冒頭は「映像ステージ」。ページを下へ進めると背景の動画も進み、
+  場面ごとの文章がページと一緒に流れながら1行ずつ現れます（stage.js）。
+    ・場面ごとの動画の秒数 … このファイルの .scene の data-from / data-to
+    ・場面ごとの長さ（スクロール量） … 同じく .scene の style「--h」
+
+  「お知らせ・ブログ」は、Googleスプレッドシートを編集するだけで更新できます。
+  接続方法は app.js 冒頭の「NEWS_SHEET_CSV_URL」付近のコメントに書かれています。
+  スプレッドシート未接続の状態でも、デモ用のダミーデータで正しく動作します。
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>炭火炉端と旬鮮料理 いろどり｜神楽坂駅徒歩3分・全席禁煙の大人居酒屋</title>
+<meta name="description" content="神楽坂駅徒歩3分。炭火炉端と旬の鮮魚が自慢の「いろどり」。全席禁煙・個室カウンター完備・インボイス対応。厳選日本酒とともに、落ち着いた大人の時間をお過ごしください。ネット予約受付中。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.irodori-kagurazaka.example.com/">
+
+<!-- ============ OGP / SNS シェア用タグ ============ -->
+<!-- NOTE: og:image は data:URI（Base64埋め込み）はSNS側のクローラーが取得できないため使用できません。 -->
+<!--       店舗の看板写真などを1枚、Web上（例：Googleビジネスプロフィール用に使った画像のURLや自社サーバー）に -->
+<!--       アップロードし、下記の og:image / twitter:image の内容（YOUR-IMAGE-URL の部分）を実際のURLに差し替えてください。 -->
+<meta property="og:type" content="restaurant">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="炭火炉端と旬鮮料理 いろどり">
+<meta property="og:title" content="炭火炉端と旬鮮料理 いろどり｜神楽坂駅徒歩3分・全席禁煙の大人居酒屋">
+<meta property="og:description" content="神楽坂駅徒歩3分。炭火炉端と旬の鮮魚が自慢の「いろどり」。全席禁煙・個室カウンター完備・インボイス対応。厳選日本酒とともに、落ち着いた大人の時間をお過ごしください。">
+<meta property="og:url" content="https://www.irodori-kagurazaka.example.com/">
+<meta property="og:image" content="https://YOUR-IMAGE-URL/irodori-ogp.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="炭火炉端と旬鮮料理 いろどり｜神楽坂駅徒歩3分・全席禁煙の大人居酒屋">
+<meta name="twitter:description" content="神楽坂駅徒歩3分。炭火炉端と旬の鮮魚が自慢の大人居酒屋。全席禁煙・個室カウンター完備。">
+<meta name="twitter:image" content="https://YOUR-IMAGE-URL/irodori-ogp.jpg">
+
+<!-- ============ 構造化データ（Schema.org / JSON-LD） ============ -->
+<!-- NOTE: image / telephone / address は仮データです。差し替え時はこの中身も実際の情報に更新してください。 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarOrPub",
+  "name": "いろどり（炭火炉端と旬鮮料理）",
+  "image": "https://YOUR-IMAGE-URL/irodori-ogp.jpg",
+  "url": "https://www.irodori-kagurazaka.example.com/",
+  "telephone": "+81-80-1630-4282",
+  "priceRange": "¥¥",
+  "servesCuisine": ["居酒屋", "日本料理", "炉端焼き"],
+  "acceptsReservations": "True",
+  "smokingAllowed": false,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "神楽坂3-6-1 いろどりビル1F",
+    "addressLocality": "新宿区",
+    "addressRegion": "東京都",
+    "postalCode": "162-0825",
+    "addressCountry": "JP"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 35.7010,
+    "longitude": 139.7405
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "17:00",
+      "closes": "24:00"
+    }
+  ],
+  "menu": "https://www.irodori-kagurazaka.example.com/#ch-signature",
+  "paymentAccepted": "現金, クレジットカード, 電子マネー, QRコード決済",
+  "currenciesAccepted": "JPY"
+}
+</script>
+
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+
+<!-- スクロール連動の可否を描画前に決める（動きを減らす設定・データセーバー時は静止画版） -->
+<script>
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js');
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var save = !!(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')));
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!save && !reduce) d.classList.add('is-scrub');
+  }());
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<a class="skip-link" href="#reservation">映像をとばして予約へ</a>
+
+<!-- ============ HEADER ============ -->
+<header class="hd" id="siteHeader" data-tone="dark">
+  <div class="hd__in">
+    <a class="hd__logo" href="#top" aria-label="いろどり トップへ">
+      <span class="hd__name">いろどり</span>
+      <span class="hd__sub">炭火炉端と旬鮮料理</span>
+    </a>
+    <nav class="hd__nav" aria-label="ページ内">
+      <a href="#ch-robata">こだわり</a>
+      <a href="#ch-sake">日本酒</a>
+      <a href="#ch-seats">店内</a>
+      <a href="#ch-signature">名物</a>
+      <a href="#reservation">ご予約</a>
+      <a href="#news">お知らせ</a>
+      <a href="#info">店舗情報</a>
+    </nav>
+    <a class="hd__tel" href="tel:08016304282">080-1630-4282</a>
+    <a class="btn btn--shu hd__reserve" href="#reservation">ネット予約</a>
+    <button class="hd__menu" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuPanel" aria-label="メニューを開く">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu-panel" id="menuPanel" hidden>
+  <nav class="menu-panel__nav" aria-label="メニュー">
+    <a href="#top">はじめに</a>
+    <a href="#ch-robata">いろどりのこだわり</a>
+    <a href="#ch-fish">本日の魚</a>
+    <a href="#ch-sake">日本酒とお飲み物</a>
+    <a href="#ch-seats">店内</a>
+    <a href="#ch-signature">名物とコース</a>
+    <a href="#reservation">ご予約</a>
+    <a href="#news">お知らせ・ブログ</a>
+    <a href="#info">店舗情報</a>
+  </nav>
+  <a class="menu-panel__tel" href="tel:08016304282">080-1630-4282<small>17:00〜24:00（日曜・祝日定休）</small></a>
+</div>
+
+<main id="main">
+
+<!-- ============================================================
+     映像ステージ
+     背景の動画は画面に敷いたまま、文章はふつうのページと同じように流れていく。
+     ページを下へ進めるほど動画も進み、各場面の文章が画面中央に来たとき、
+     動画もちょうどその場面になる（場面の境目 = data-from / data-to 秒）。
+     各場面の長さ（スクロール量）は style の --h（画面の高さ = 100）で調整できる。
+     ============================================================ -->
+<section class="stage" id="top" aria-label="いろどりの店内をめぐる">
+
+  <div class="stage__film" aria-hidden="true">
+    <img class="stage__poster" src="assets/video/poster-720.jpg" srcset="assets/video/poster-480.jpg 854w, assets/video/poster-720.jpg 1280w" sizes="100vw" alt="" width="1280" height="720" fetchpriority="high">
+    <video class="stage__video" id="stageVideo" muted playsinline disablepictureinpicture preload="none" tabindex="-1" width="1280" height="720"></video>
+    <div class="stage__scrim stage__scrim--bottom"></div>
+    <div class="stage__scrim stage__scrim--right"></div>
+    <div class="stage__scrim stage__scrim--left"></div>
+    <div class="stage__scrim stage__scrim--center"></div>
+    <div class="stage__vignette"></div>
+  </div>
+
+  <div class="stage__scenes">
+
+    <article class="scene scene--bottom" id="ch-noren" data-from="0" data-to="1.2" data-side="bottom" data-pos="50%" style="--h: 100; --still: url(assets/stills/noren.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>神楽坂駅 徒歩3分｜炭火炉端と産直旬鮮魚</span></p>
+        <h1 class="ln catch">一杯に、<br class="u-sp">旬をそえて。</h1>
+        <p class="ln scroll-cue" aria-hidden="true">SCROLL</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-entrance" data-from="1.2" data-to="4" data-side="right" data-pos="45%" style="--h: 120; --still: url(assets/stills/entrance.webp)">
+      <div class="scene__body">
+        <p class="ln lead">職人が焼き上げる炭火の原始焼きと、</p>
+        <p class="ln lead">厳選地酒を落ち着いた和空間で。</p>
+      </div>
+    </article>
+
+    <article class="scene scene--left" id="ch-robata" data-from="4" data-to="7.5" data-side="left" data-pos="50%" style="--h: 150; --still: url(assets/stills/robata.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>OUR COMMITMENT</span></p>
+        <h2 class="ln heading">いろどりのこだわり</h2>
+        <p class="ln text">毎朝仕入れる産直の旬鮮魚</p>
+        <p class="ln text">備長炭でじっくり焼き上げる本格炉端</p>
+        <p class="ln text">料理の香りを味わう</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-fish" data-from="7.5" data-to="9.5" data-side="right" data-pos="40%" style="--h: 100; --still: url(assets/stills/fish.webp)">
+      <div class="scene__body scene__body--end">
+        <p class="ln eyebrow"><span>TODAY'S FISH</span></p>
+        <p class="ln lead lead--lg">目利きが選んだ本日の魚。</p>
+      </div>
+    </article>
+
+    <article class="scene scene--right scene--tate" id="ch-sake" data-from="9.5" data-to="11" data-side="right" data-pos="22%" data-graded style="--h: 160; --still: url(assets/stills/sake.webp)">
+      <div class="scene__body">
+        <h2 class="ln tate" aria-label="日本酒"><span aria-hidden="true">日</span><span aria-hidden="true">本</span><span aria-hidden="true">酒</span></h2>
+        <div class="scene__col">
+          <p class="ln eyebrow"><span>SAKE &amp; DRINK</span></p>
+          <p class="ln text">各地の蔵元から厳選した純米酒・純米吟醸を常時10種以上。</p>
+          <p class="ln text text--sub">辛口から甘口まで、季節のおすすめを利き酒セットでも。</p>
+          <p class="ln text text--small">焼酎・ビール・ハイボール・サワー・ワイン・ソフトドリンクも。</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="scene scene--right" id="ch-seats" data-from="11" data-to="12.8" data-side="right" data-pos="35%" style="--h: 110; --still: url(assets/stills/seats.webp)">
+      <div class="scene__body">
+        <p class="ln eyebrow"><span>ATMOSPHERE</span></p>
+        <h2 class="ln heading">店内</h2>
+        <p class="ln text">カウンター 8席 ／ テーブル 20席</p>
+        <p class="ln text text--sub">全席禁煙・個室カウンター完備</p>
+      </div>
+    </article>
+
+    <article class="scene scene--left scene--tate" id="ch-signature" data-from="12.8" data-to="14.4" data-side="left" data-pos="46%" data-graded style="--h: 180; --still: url(assets/stills/signature.webp)">
+      <div class="scene__body">
+        <h2 class="ln tate" aria-label="名物"><span aria-hidden="true">名</span><span aria-hidden="true">物</span></h2>
+        <div class="scene__col">
+          <p class="ln eyebrow"><span>SIGNATURE</span></p>
+          <ul class="dish-list" aria-label="名物料理">
+            <li class="ln text">極上鮮魚の刺身盛り合わせ</li>
+            <li class="ln text">特製炭火焼き鳥・串焼き五本盛り</li>
+            <li class="ln text">天然鮎の塩焼き</li>
+          </ul>
+          <p class="ln rule" aria-hidden="true"></p>
+          <ul class="dish-list" aria-label="コース（2時間飲み放題付き）">
+            <li class="ln text course"><b>彩りコース</b> 5,500円<small>全8品・2H飲み放題</small></li>
+            <li class="ln text course"><b>名物三種コース</b> 6,800円<small>全10品・2H飲み放題</small></li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="scene scene--center" id="ch-welcome" data-from="14.4" data-to="15" data-side="center" data-pos="46%" style="--h: 140; --still: url(assets/stills/welcome.webp)">
+      <div class="scene__body">
+        <h2 class="ln welcome">席へ、どうぞ。</h2>
+        <p class="ln ln--action"><a class="btn btn--shu btn--lg" href="#reservation">ご予約へ進む</a></p>
+      </div>
+    </article>
+
+  </div>
+
+  <nav class="progress" id="stageHud" aria-label="映像の章">
+    <div class="progress__track" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
+    <div class="progress__row">
+      <a class="progress__ch" href="#ch-noren">暖簾</a>
+      <a class="progress__ch" href="#ch-entrance">炉端</a>
+      <a class="progress__ch" href="#ch-fish">鮮魚</a>
+      <a class="progress__ch" href="#ch-sake">日本酒</a>
+      <a class="progress__ch" href="#ch-seats">店内</a>
+      <a class="progress__ch" href="#ch-signature">名物</a>
+      <a class="progress__ch" href="#ch-welcome">席</a>
+      <span class="progress__now" id="chapterNow" aria-hidden="true">暖簾</span>
+      <a class="progress__skip" href="#reservation">映像をとばして予約へ<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </nav>
+
+  <p class="stage__status" id="stageStatus" role="status" hidden>映像を読み込んでいます</p>
+</section>
+
+<!-- ============ 第2部：和紙トーン ============ -->
+<div class="washi">
+  <div class="washi__fade" aria-hidden="true"></div>
+
+<!-- ============ RESERVATION ============ -->
+<section id="reservation" class="sec">
+  <div class="sec__in">
+    <header class="sec__head reveal">
+      <p class="sec__en">RESERVATION</p>
+      <h2 class="sec__title">ご予約</h2>
+      <p class="sec__lead">下記フォーム、またはお電話・外部予約サイトよりお気軽にお問い合わせください。</p>
+    </header>
+
+    <div class="reserve">
+      <form id="reserve-form" class="card reserve__form reveal">
+        <div class="field-row">
+          <div class="field">
+            <label for="f-date">来店日 <em>必須</em></label>
+            <input id="f-date" required type="date" name="date">
+          </div>
+          <div class="field">
+            <label for="f-time">来店時間 <em>必須</em></label>
+            <select id="f-time" required name="time">
+              <option value="">選択してください</option>
+              <option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option>
+              <option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option>
+              <option>21:00</option><option>21:30</option><option>22:00</option><option>22:30</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-guests">人数 <em>必須</em></label>
+            <select id="f-guests" required name="guests">
+              <option value="">選択してください</option>
+              <option>1名</option><option>2名</option><option>3名</option><option>4名</option>
+              <option>5名</option><option>6名</option><option>7名</option><option>8名</option>
+              <option>9名</option><option>10名</option><option>11名</option><option>12名</option>
+              <option>13名</option><option>14名</option><option>15名</option><option>16名</option>
+              <option>17名</option><option>18名</option><option>19名</option><option>20名</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="course-select">コース選択</label>
+            <select name="course" id="course-select">
+              <option value="指定なし（アラカルト）">指定なし（アラカルト）</option>
+              <option value="彩りコース（5,500円）">彩りコース（5,500円）</option>
+              <option value="名物三種コース（6,800円）">名物三種コース（6,800円）</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <legend>お席のご希望</legend>
+          <div class="chips">
+            <input type="radio" name="seat" id="seat-any" value="おまかせ" checked>
+            <label for="seat-any">おまかせ</label>
+            <input type="radio" name="seat" id="seat-counter" value="カウンター席">
+            <label for="seat-counter">カウンター席</label>
+            <input type="radio" name="seat" id="seat-table" value="テーブル席">
+            <label for="seat-table">テーブル席</label>
+          </div>
+        </fieldset>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">お名前 <em>必須</em></label>
+            <input id="f-name" required type="text" name="name" placeholder="例）山田 太郎" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-kana">フリガナ</label>
+            <input id="f-kana" type="text" name="furigana" placeholder="例）ヤマダ タロウ">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-phone">お電話番号 <em>必須</em></label>
+            <input id="f-phone" required type="tel" name="phone" placeholder="例）090-1234-5678" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="f-email">メールアドレス <em>必須</em></label>
+            <input id="f-email" required type="email" name="email" placeholder="例）taro@example.com" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-note">ご要望・備考</label>
+          <textarea id="f-note" name="note" rows="3" placeholder="アレルギー、記念日のご相談など"></textarea>
+        </div>
+
+        <!-- Honeypot：スパムボット対策。人間には見えないフィールドで、値が入っていたら送信をブロックします -->
+        <div class="honeypot" aria-hidden="true">
+          <label for="reserve-gotcha">このフィールドは入力しないでください</label>
+          <input type="text" id="reserve-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn btn--shu btn--block">内容を確認する</button>
+        <p class="note">次の画面で入力内容をご確認いただいた後、正式にお送りいただけます。当日の空き状況によりご希望に添えない場合がございます。</p>
+      </form>
+
+      <div class="reserve__side">
+        <div class="card card--wood reveal">
+          <h3 class="card__title">外部予約サイトから</h3>
+          <div class="ext-links">
+            <a href="#">食べログで予約<span aria-hidden="true">↗</span></a>
+            <a href="#">ホットペッパーグルメで予約<span aria-hidden="true">↗</span></a>
+            <a href="#">LINEで予約・問い合わせ<span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="card card--tel reveal">
+          <h3 class="card__title">お電話でのご予約</h3>
+          <a class="tel-big" href="tel:08016304282">080-1630-4282</a>
+          <p class="note">17:00〜24:00（日曜・祝日定休）</p>
+        </div>
+        <div class="card card--map reveal">
+          <iframe title="いろどり 地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=%E7%A5%9E%E6%A5%BD%E5%9D%82%E9%A7%85&output=embed"></iframe>
+          <div class="map-info">
+            <p><b>東京都新宿区神楽坂3-6-1 いろどりビル1F</b></p>
+            <p class="note">東京メトロ東西線「神楽坂駅」徒歩3分</p>
+            <!-- NOTE: place_id=YOUR_PLACE_ID の部分を、Googleビジネスプロフィールで取得した実際のプレイスIDに差し替えてください -->
+            <div class="map-links">
+              <a href="https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID" target="_blank" rel="noopener">クチコミを書く</a>
+              <a href="https://search.google.com/local/reviews?placeid=YOUR_PLACE_ID" target="_blank" rel="noopener">クチコミを見る</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWS / BLOG（Googleスプレッドシート連携） ============ -->
+<!--
+  記事の追加・編集は、Googleスプレッドシートの行を編集するだけでOKです（HTMLの編集は不要です）。
+  接続方法・列の並び順は app.js 冒頭「NEWS_SHEET_CSV_URL」付近のコメントをご覧ください。
+  スプレッドシート未接続の状態でも、デモ用のダミーデータでこのセクションのプレビューが可能です。
+-->
+<section id="news" class="sec">
+  <div class="sec__in">
+    <header class="sec__head reveal">
+      <p class="sec__en">NEWS &amp; BLOG</p>
+      <h2 class="sec__title">お知らせ・ブログ</h2>
+      <p class="sec__lead">入荷情報や店休日、イベントなど、店主・スタッフからの最新のお知らせです。</p>
+    </header>
+    <!-- 記事カードはJavaScriptで自動生成されます -->
+    <div id="news-grid" class="news-grid"></div>
+    <p id="news-empty" class="note note--center" hidden>現在お知らせはございません。</p>
+    <div class="center">
+      <button id="news-load-more" type="button" class="btn btn--line" hidden>過去のお知らせを見る</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORE INFO ============ -->
+<section id="info" class="sec">
+  <div class="sec__in sec__in--narrow">
+    <header class="sec__head reveal">
+      <p class="sec__en">SHOP INFO</p>
+      <h2 class="sec__title">店舗情報</h2>
+    </header>
+    <dl class="card info reveal">
+      <div><dt>店名</dt><dd>いろどり（炭火炉端と旬鮮料理）</dd></div>
+      <div><dt>住所・アクセス</dt><dd>東京都新宿区神楽坂3-6-1 いろどりビル1F<br>東京メトロ東西線「神楽坂駅」徒歩3分</dd></div>
+      <div><dt>電話番号</dt><dd><a href="tel:08016304282">080-1630-4282</a></dd></div>
+      <div><dt>営業時間</dt><dd>17:00〜24:00（フードL.O. 23:00 ／ ドリンクL.O. 23:30）</dd></div>
+      <div><dt>定休日</dt><dd>日曜日・祝日</dd></div>
+      <div><dt>座席数</dt><dd>カウンター8席／テーブル20席（4名席×5卓）　計28席</dd></div>
+      <div><dt>禁煙・喫煙</dt><dd><span class="tag">全席禁煙</span></dd></div>
+      <div><dt>お支払い方法</dt><dd>
+        <p>クレジットカード：VISA／Mastercard／JCB／AMEX／Diners</p>
+        <p>電子マネー：交通系IC／iD／QUICPay</p>
+        <p>QRコード決済：PayPay／楽天ペイ／au PAY</p>
+        <p class="note">適格請求書発行事業者登録済（インボイス対応）</p>
+      </dd></div>
+      <div><dt>サービス料・チャージ</dt><dd>サービス料・チャージ料はいただいておりません。お通し代として一律550円を頂戴しております。</dd></div>
+      <div><dt>キャンセルポリシー</dt><dd>5名様以上の団体様・コースご予約は、前日キャンセルで料金の50%、当日キャンセル・無連絡の場合は100%のキャンセル料を申し受けます。</dd></div>
+    </dl>
+  </div>
+</section>
+
+</div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="ft">
+  <div class="ft__in">
+    <div class="ft__top">
+      <div class="ft__brand">
+        <img src="assets/img/logo.webp" alt="" width="48" height="48" loading="lazy">
+        <div>
+          <p class="ft__name">いろどり</p>
+          <p class="ft__sub">炭火炉端と旬鮮料理</p>
+        </div>
+      </div>
+      <nav class="ft__nav" aria-label="フッター">
+        <a href="#ch-robata">こだわり</a>
+        <a href="#ch-sake">日本酒</a>
+        <a href="#ch-seats">店内</a>
+        <a href="#ch-signature">名物</a>
+        <a href="#reservation">ご予約</a>
+        <a href="#news">お知らせ</a>
+        <a href="#info">店舗情報</a>
+      </nav>
+      <a class="ft__top-link" href="#top">トップへ戻る ↑</a>
+    </div>
+    <div class="ft__bottom">
+      <p>東京都新宿区神楽坂3-6-1 いろどりビル1F ／ 080-1630-4282</p>
+      <p>&copy; <span id="year"></span> Izakaya Irodori. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SP 固定CTAバー ============ -->
+<div class="sp-bar" id="spBar">
+  <a href="tel:08016304282">電話する</a>
+  <a class="sp-bar__shu" href="#reservation">ネット予約</a>
+</div>
+
+<!-- ============ 予約フォーム：確認 → 送信中 → 完了 モーダル ============ -->
+<div id="reserve-modal" class="modal" hidden>
+  <div class="modal__backdrop" id="modal-backdrop"></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="reserve-modal-title">
+
+    <!-- STEP 1: 確認画面 -->
+    <div id="reserve-view-confirm" class="modal__view">
+      <h3 class="modal__title" id="reserve-modal-title">ご入力内容のご確認</h3>
+      <p class="note">この内容でよろしければ「この内容で確定する」を押してください。</p>
+      <dl id="reserve-confirm-list" class="confirm-list"></dl>
+      <div class="modal__actions">
+        <button id="reserve-confirm-back" type="button" class="btn btn--line">修正する</button>
+        <button id="reserve-confirm-submit" type="button" class="btn btn--shu">この内容で確定する</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: 送信中（ローディング） -->
+    <div id="reserve-view-loading" class="modal__view modal__view--center" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p><b>送信しています…</b></p>
+    </div>
+
+    <!-- STEP 3: 完了 -->
+    <div id="reserve-view-success" class="modal__view modal__view--center" hidden>
+      <div class="modal__icon" aria-hidden="true">✓</div>
+      <h3 class="modal__title">予約リクエストを承りました</h3>
+      <p id="modal-summary">確認のご連絡を差し上げます。今しばらくお待ちください。</p>
+      <p class="note">ご入力いただいたメールアドレス宛に、自動返信メールをお送りしています。</p>
+      <button id="modal-close" type="button" class="btn btn--ink">閉じる</button>
+    </div>
+
+    <!-- STEP 4: 送信エラー -->
+    <div id="reserve-view-error" class="modal__view modal__view--center" hidden>
+      <div class="modal__icon modal__icon--error" aria-hidden="true">!</div>
+      <h3 class="modal__title">送信に失敗しました</h3>
+      <p>大変恐れ入りますが、通信状況などの影響でリクエストを送信できませんでした。</p>
+      <p>お手数をおかけいたしますが、お電話にてご予約くださいますようお願いいたします。</p>
+      <a href="tel:08016304282" class="btn btn--shu">080-1630-4282 に電話する</a>
+      <div class="modal__actions">
+        <button id="reserve-error-retry" type="button" class="btn btn--line">もう一度試す</button>
+        <button id="reserve-error-close" type="button" class="btn btn--text">閉じる</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ NEWS DETAIL MODAL ============ -->
+<div id="news-modal" class="modal" hidden>
+  <div class="modal__backdrop" data-news-close></div>
+  <div class="modal__panel modal__panel--news" role="dialog" aria-modal="true" aria-labelledby="news-modal-title">
+    <button type="button" class="modal__close" data-news-close aria-label="閉じる">×</button>
+    <div id="news-modal-image" class="news-modal__image"></div>
+    <div class="modal__view">
+      <div class="news-meta">
+        <span id="news-modal-category" class="badge"></span>
+        <span id="news-modal-date" class="news-date"></span>
+      </div>
+      <h3 id="news-modal-title" class="modal__title"></h3>
+      <p id="news-modal-content" class="news-body"></p>
+    </div>
+  </div>
+</div>
+
+<script src="stage.js"></script>
+<script src="app.js"></script>
+
+<!-- デモサイト表示（SHO 店舗向けHP制作） -->
+<style>
+#sho-demo-badge{position:fixed;left:14px;top:88px;z-index:40;display:inline-flex;align-items:center;gap:8px;padding:9px 14px 9px 11px;border-radius:999px;background:rgba(43,58,74,.92);color:#fff;font:600 12px/1.3 "Noto Sans JP","Hiragino Sans",sans-serif;letter-spacing:.04em;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:.96}
+#sho-demo-badge:hover{opacity:1}
+#sho-demo-badge .dot{width:8px;height:8px;border-radius:50%;background:#c87d55;flex:none}
+#sho-demo-badge small{font-weight:400;opacity:.8}
+@media (max-width:640px){#sho-demo-badge{top:70px;left:10px;padding:7px 11px 7px 9px;font-size:11px}#sho-demo-badge small{display:none}}
+</style>
+<a id="sho-demo-badge" href="../../" target="_blank" rel="noopener" aria-label="これはデモサイトです。SHO 店舗向けHP制作のサイトへ"><span class="dot"></span>これはデモサイトです<small>｜ SHO 店舗向けHP制作</small></a>
+</body>
+</html>
